@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Infrastructure adapter package: the Streaming (Kafka) provider shell (task 20.2). It plugs into
+    the Domain ports (IMessagingProvider, IMessagePublisher, IMessageConsumerHost) and reuses the
+    Application lifecycle state machine. Dependencies point inward only: it references
+    Messaging.Abstractions (Domain ports) and Messaging (Application); nothing in Domain/Application
+    references this package. The deep Kafka mechanics (partition assignment, rebalancing,
+    retention/replay) behind the shallow ports are owned by a later spec.
+
+    This mode uses the native Confluent.Kafka producer/consumer rather than the MassTransit Kafka
+    Rider: streaming's defining concern is explicit consumer-group/partition assignment and manual
+    offset-commit control, which the Rider abstracts away (see the design's MassTransit Tradeoff
+    Analysis). Manual offset commit after the core pipeline preserves at-least-once (Req 6.7).
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\Messaging.Abstractions\Messaging.Abstractions.csproj" />
+    <ProjectReference Include="..\Messaging\Messaging.csproj" />
+  </ItemGroup>
+
+  <!--
+    Native Kafka client (Confluent.Kafka) and structured logging via ILogger<T>
+    (Microsoft.Extensions.Logging.Abstractions). Versions are pinned to exact releases (no open
+    ranges), aligned with the 8.0.x abstractions used by the other Infrastructure packages. The
+    adapter logs its produce/consume/commit lifecycle; it never logs raw payloads or secrets.
+  -->
+  <ItemGroup>
+    <PackageReference Include="Confluent.Kafka" Version="2.15.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

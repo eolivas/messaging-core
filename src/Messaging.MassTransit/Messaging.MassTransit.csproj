@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Messaging.Abstractions\Messaging.Abstractions.csproj" />
+    <ProjectReference Include="..\Messaging\Messaging.csproj" />
+    <ProjectReference Include="..\Messaging.Contracts\Messaging.Contracts.csproj" />
+  </ItemGroup>
+
+  <!--
+    MassTransit backs the broker-shaped modes (Pub/Sub over RabbitMQ, Message Queue over
+    SQS / Azure Service Bus / in-memory transport). Pinned to the latest 8.x line, which is the
+    .NET 8-compatible release train (MassTransit 9.x targets .NET 9).
+  -->
+  <ItemGroup>
+    <PackageReference Include="MassTransit" Version="8.5.11" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+  </ItemGroup>
+
+</Project>

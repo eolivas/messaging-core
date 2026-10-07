@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="FsCheck.Xunit" Version="3.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+  </ItemGroup>
+
+  <!--
+    OpenTelemetry SDK + in-memory exporter for the span-linking integration test (task 22.4, Req 9.6):
+    the SDK subscribes to the core's ActivitySource ("Messaging.Core") and the InMemory exporter lets
+    the test assert the exported publish/consume spans are linked by the Correlation_Id without a real
+    collector. Pinned to exact 1.9.0 (net8.0-era stable), consistent across both packages.
+  -->
+  <ItemGroup>
+    <PackageReference Include="OpenTelemetry" Version="1.9.0" />
+    <PackageReference Include="OpenTelemetry.Exporter.InMemory" Version="1.9.0" />
+  </ItemGroup>
+
+  <!--
+    The concrete DI container and hosting abstractions are needed to build a ServiceProvider and
+    exercise the registration surfaces end-to-end (the Application package references only the DI
+    abstractions). Pinned to exact 8.0.x patches, aligned with the rest of the solution.
+  -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Messaging\Messaging.csproj" />
+  </ItemGroup>
+
+</Project>

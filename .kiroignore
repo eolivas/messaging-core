@@ -1,0 +1,15 @@
+# Secrets & local config
+.env
+.env.*
+**/appsettings.*.json
+**/*.pem
+**/*.pfx
+**/secrets.json
+
+# Build output & dependencies
+bin/
+obj/
+node_modules/
+dist/
+TestResults/
+*.user

@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <!--
+    The architecture test enforces the inward-dependency rule (Req 3.1, 3.8) by reflecting over
+    the referenced-assembly metadata of the Domain (Messaging.Abstractions) and Application
+    (Messaging) assemblies. It references ONLY those two inward assemblies to reach the anchor
+    types; it deliberately does NOT reference the concrete provider assemblies
+    (Messaging.MassTransit, Messaging.Kafka, Messaging.Batch, Messaging.Persistence) — their
+    absence is exactly what the test verifies, by inspecting the inward assemblies' own
+    referenced-assembly names.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Messaging\Messaging.csproj" />
+    <ProjectReference Include="..\..\src\Messaging.Abstractions\Messaging.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

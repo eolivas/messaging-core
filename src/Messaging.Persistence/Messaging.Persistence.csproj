@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <!--
+    Infrastructure adapter package: the EF outbox and idempotency stores (Req 5, 7).
+    Dependencies point inward only. It references Messaging.Abstractions (Domain ports and the
+    OutboxStatus enum) and Messaging (Application, for the configuration bounds/retention model);
+    the Domain layer gains no EF dependency. EF types (DbContext, entity configurations, and the
+    persistence entity models) live only here, never in Domain.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\Messaging.Abstractions\Messaging.Abstractions.csproj" />
+    <ProjectReference Include="..\Messaging\Messaging.csproj" />
+  </ItemGroup>
+
+  <!--
+    Npgsql EF Core 8 provider, pinned to an exact patch compatible with EF Core 8 (no open
+    ranges). Supplies jsonb/bytea/timestamptz mapping and PostgreSQL ON CONFLICT DO NOTHING
+    (upsert) semantics used by the idempotency insert in task 16.2.
+  -->
+  <ItemGroup>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
+  </ItemGroup>
+
+  <!--
+    Hosting + logging + DI abstractions for the idempotency retention sweep (task 16.2): the
+    background sweep is a BackgroundService (Microsoft.Extensions.Hosting.Abstractions), logs via
+    structured logging (Microsoft.Extensions.Logging.Abstractions), and the minimal DI helper
+    registers the store and hosted sweep (Microsoft.Extensions.DependencyInjection.Abstractions).
+    Pinned to exact 8.0.x patches (no open ranges), aligned with the EF Core 8 provider above.
+  -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+  </ItemGroup>
+
+</Project>

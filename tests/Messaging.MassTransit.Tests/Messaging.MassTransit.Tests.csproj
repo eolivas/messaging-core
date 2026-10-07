@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="FsCheck.Xunit" Version="3.4.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+  </ItemGroup>
+
+  <!--
+    Real RabbitMQ broker for the MassTransit round-trip + dead-letter integration test (task 22.2).
+    The one-engine / real-dependency rule (design + infrastructure steering) forbids the MassTransit
+    in-memory transport here: publish/consume round-trip and dead-letter routing must run against an
+    actual broker. Testcontainers.RabbitMq is pinned to 3.10.0 — the exact version the PostgreSQL
+    Testcontainer uses elsewhere in the repo (no open ranges). MassTransit.RabbitMQ is pinned to
+    8.5.11 to match the MassTransit core version the adapter package already references.
+  -->
+  <ItemGroup>
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.11" />
+    <PackageReference Include="Testcontainers.RabbitMq" Version="3.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Messaging.MassTransit\Messaging.MassTransit.csproj" />
+  </ItemGroup>
+
+</Project>

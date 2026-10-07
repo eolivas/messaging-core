@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <!--
+    Domain references only Messaging.Contracts, which itself has no external package
+    dependencies. This keeps the Domain layer free of external dependencies (Req 3.8)
+    while allowing the ports to share the transport-neutral MessageEnvelope contract.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\Messaging.Contracts\Messaging.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <!--
+    Test framework + property testing, pinned to the exact versions already used across the repo's
+    test projects (no open ranges): xUnit + FsCheck.Xunit for the property tests, the .NET test
+    SDK as the runner host, and coverlet for coverage collection.
+  -->
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="FsCheck.Xunit" Version="3.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+  </ItemGroup>
+
+  <!--
+    Real PostgreSQL via Testcontainers for the persistence property tests. The one-engine rule
+    (design + infrastructure steering) forbids an in-memory DB substitute: the idempotency store's
+    ON CONFLICT DO NOTHING and indexed PK lookup must run against the actual engine. Pinned to the
+    exact 3.10.0 release (compatible with net8.0, no open range).
+  -->
+  <ItemGroup>
+    <PackageReference Include="Testcontainers.PostgreSql" Version="3.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <!--
+    Reference the system under test (the EF persistence stores) and the Domain ports it implements.
+    Dependencies point inward only; the test project is Infrastructure-adjacent and references both
+    Messaging.Persistence (adapters) and Messaging.Abstractions (ports).
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Messaging.Persistence\Messaging.Persistence.csproj" />
+    <ProjectReference Include="..\..\src\Messaging.Abstractions\Messaging.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

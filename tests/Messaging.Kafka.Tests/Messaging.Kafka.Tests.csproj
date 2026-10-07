@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="FsCheck.Xunit" Version="3.4.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+  </ItemGroup>
+
+  <!--
+    Real Kafka broker via Testcontainers for the at-least-once integration test (task 22.3). The
+    one-engine / real-dependency rule (design + infrastructure steering) forbids a fake broker here:
+    manual offset-commit-after-pipeline and consumer-group redelivery are broker semantics that must
+    run against an actual Kafka. Testcontainers.Kafka is pinned to the same 3.10.0 as
+    Testcontainers.PostgreSql elsewhere in the solution; Confluent.Kafka is pinned to the exact
+    2.15.1 the adapter package uses so the client and broker contract stay aligned.
+  -->
+  <ItemGroup>
+    <PackageReference Include="Testcontainers.Kafka" Version="3.10.0" />
+    <PackageReference Include="Confluent.Kafka" Version="2.15.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Messaging.Kafka\Messaging.Kafka.csproj" />
+  </ItemGroup>
+
+</Project>

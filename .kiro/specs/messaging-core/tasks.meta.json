@@ -1,0 +1,908 @@
+{
+  "pbtResults": {
+    "11.2 Write property test for bounded retry and dead-letter on exhaustion": {
+      "status": "passed",
+      "lastRunTimestamp": 1791226037388
+    },
+    "11.3 Write property test for backoff delay bounds": {
+      "status": "passed",
+      "lastRunTimestamp": 1791226038349
+    },
+    "12.2 Write property test for deterministic idempotency keys": {
+      "status": "passed",
+      "lastRunTimestamp": 1791226715694
+    },
+    "12.3 Write property test for underivable-key rejection": {
+      "status": "passed",
+      "lastRunTimestamp": 1791226716508
+    },
+    "18.3 Write property test for shutdown incomplete-count recording": {
+      "status": "passed",
+      "lastRunTimestamp": 1791266532169
+    },
+    "18.2 Write property test for readiness reflecting transport reachability": {
+      "status": "passed",
+      "lastRunTimestamp": 1791266538981
+    }
+  },
+  "executionHistory": {
+    "1. Set up solution structure and core package skeletons": [
+      {
+        "executionId": "656d8595-79e9-4d25-ad6a-958a3ce6a4ac",
+        "chatSessionId": "sess_7eef7291-6a89-4d27-8915-fd25d50ce281",
+        "timestamp": 1791215591314
+      },
+      {
+        "executionId": "656d8595-79e9-4d25-ad6a-958a3ce6a4ac",
+        "chatSessionId": "sess_7eef7291-6a89-4d27-8915-fd25d50ce281",
+        "timestamp": 1791217800611
+      }
+    ],
+    "2.1 Implement the `MessageEnvelope` record and envelope invariants": [
+      {
+        "executionId": "6fbaa396-5702-432d-99ba-7fe696b25e60",
+        "chatSessionId": "sess_d34f2827-3c7f-4f03-bd77-17a29b7e14c0",
+        "timestamp": 1791217941922
+      },
+      {
+        "executionId": "6fbaa396-5702-432d-99ba-7fe696b25e60",
+        "chatSessionId": "sess_d34f2827-3c7f-4f03-bd77-17a29b7e14c0",
+        "timestamp": 1791218152238
+      }
+    ],
+    "2.2 Write unit tests for header-count and field edge cases": [
+      {
+        "executionId": "6fbaa396-5702-432d-99ba-7fe696b25e60",
+        "chatSessionId": "sess_d34f2827-3c7f-4f03-bd77-17a29b7e14c0",
+        "timestamp": 1791218155801
+      },
+      {
+        "executionId": "6fbaa396-5702-432d-99ba-7fe696b25e60",
+        "chatSessionId": "sess_d34f2827-3c7f-4f03-bd77-17a29b7e14c0",
+        "timestamp": 1791218286115
+      }
+    ],
+    "2. Define the transport-neutral Message_Envelope and contract support (Messaging.Contracts / Domain)": [
+      {
+        "executionId": "6fbaa396-5702-432d-99ba-7fe696b25e60",
+        "chatSessionId": "sess_d34f2827-3c7f-4f03-bd77-17a29b7e14c0",
+        "timestamp": 1791218287498
+      }
+    ],
+    "3. Define the core ports and result types (Domain)": [
+      {
+        "executionId": "597200f2-1231-46a4-af08-e88c15124130",
+        "chatSessionId": "sess_367bde1d-c73e-4acc-b9ad-ea017f3cce4e",
+        "timestamp": 1791218340435
+      },
+      {
+        "executionId": "597200f2-1231-46a4-af08-e88c15124130",
+        "chatSessionId": "sess_367bde1d-c73e-4acc-b9ad-ea017f3cce4e",
+        "timestamp": 1791219135846
+      }
+    ],
+    "4. Define Messaging_Configuration model (Application)": [
+      {
+        "executionId": "6e5144c6-1eb1-4441-ab96-128bb952d4cc",
+        "chatSessionId": "sess_3a4045c7-bb51-4031-94d3-7555af8e23b5",
+        "timestamp": 1791219247636
+      },
+      {
+        "executionId": "6e5144c6-1eb1-4441-ab96-128bb952d4cc",
+        "chatSessionId": "sess_3a4045c7-bb51-4031-94d3-7555af8e23b5",
+        "timestamp": 1791219505398
+      }
+    ],
+    "5.1 Implement fail-fast aggregating validation": [
+      {
+        "executionId": "74eee1b4-61ba-41e1-a3dd-e1d3bd29a93f",
+        "chatSessionId": "sess_7df2c379-ae88-4313-9445-fff94396eb38",
+        "timestamp": 1791219605047
+      },
+      {
+        "executionId": "74eee1b4-61ba-41e1-a3dd-e1d3bd29a93f",
+        "chatSessionId": "sess_7df2c379-ae88-4313-9445-fff94396eb38",
+        "timestamp": 1791219855537
+      }
+    ],
+    "5.2 Write property test for complete missing-value reporting": [
+      {
+        "executionId": "74eee1b4-61ba-41e1-a3dd-e1d3bd29a93f",
+        "chatSessionId": "sess_7df2c379-ae88-4313-9445-fff94396eb38",
+        "timestamp": 1791219871923
+      },
+      {
+        "executionId": "74eee1b4-61ba-41e1-a3dd-e1d3bd29a93f",
+        "chatSessionId": "sess_7df2c379-ae88-4313-9445-fff94396eb38",
+        "timestamp": 1791220590338
+      }
+    ],
+    "5.3 Write property test for range/set soundness and completeness": [
+      {
+        "executionId": "74eee1b4-61ba-41e1-a3dd-e1d3bd29a93f",
+        "chatSessionId": "sess_7df2c379-ae88-4313-9445-fff94396eb38",
+        "timestamp": 1791219873072
+      },
+      {
+        "executionId": "74eee1b4-61ba-41e1-a3dd-e1d3bd29a93f",
+        "chatSessionId": "sess_7df2c379-ae88-4313-9445-fff94396eb38",
+        "timestamp": 1791220591983
+      }
+    ],
+    "5.4 Write unit tests for startup failure messages": [
+      {
+        "executionId": "74eee1b4-61ba-41e1-a3dd-e1d3bd29a93f",
+        "chatSessionId": "sess_7df2c379-ae88-4313-9445-fff94396eb38",
+        "timestamp": 1791219874511
+      },
+      {
+        "executionId": "74eee1b4-61ba-41e1-a3dd-e1d3bd29a93f",
+        "chatSessionId": "sess_7df2c379-ae88-4313-9445-fff94396eb38",
+        "timestamp": 1791220592591
+      }
+    ],
+    "5. Implement Configuration_Validator (Application)": [
+      {
+        "executionId": "74eee1b4-61ba-41e1-a3dd-e1d3bd29a93f",
+        "chatSessionId": "sess_7df2c379-ae88-4313-9445-fff94396eb38",
+        "timestamp": 1791220593647
+      }
+    ],
+    "6.1 Implement registry construction and `Resolve`": [
+      {
+        "executionId": "4d75c083-ae24-42f0-99c5-4233d5cf6615",
+        "chatSessionId": "sess_7df19b18-2d11-43e6-8a75-fd5f31f1507c",
+        "timestamp": 1791220925436
+      },
+      {
+        "executionId": "4d75c083-ae24-42f0-99c5-4233d5cf6615",
+        "chatSessionId": "sess_7df19b18-2d11-43e6-8a75-fd5f31f1507c",
+        "timestamp": 1791221091494
+      }
+    ],
+    "6.2 Write property test for exact, fail-fast, stable resolution": [
+      {
+        "executionId": "4d75c083-ae24-42f0-99c5-4233d5cf6615",
+        "chatSessionId": "sess_7df19b18-2d11-43e6-8a75-fd5f31f1507c",
+        "timestamp": 1791221102993
+      },
+      {
+        "executionId": "4d75c083-ae24-42f0-99c5-4233d5cf6615",
+        "chatSessionId": "sess_7df19b18-2d11-43e6-8a75-fd5f31f1507c",
+        "timestamp": 1791221314736
+      }
+    ],
+    "6. Implement Provider_Registry and resolution (Application)": [
+      {
+        "executionId": "4d75c083-ae24-42f0-99c5-4233d5cf6615",
+        "chatSessionId": "sess_7df19b18-2d11-43e6-8a75-fd5f31f1507c",
+        "timestamp": 1791221316449
+      }
+    ],
+    "7. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "8fc77e8f-36a1-46ef-99bd-ee430988db68",
+        "chatSessionId": "sess_611b7a33-04b7-4673-844f-749e77b987e3",
+        "timestamp": 1791221378277
+      },
+      {
+        "executionId": "8fc77e8f-36a1-46ef-99bd-ee430988db68",
+        "chatSessionId": "sess_611b7a33-04b7-4673-844f-749e77b987e3",
+        "timestamp": 1791221651482
+      }
+    ],
+    "8.1 Implement correlation id generation and envelope validation gate": [
+      {
+        "executionId": "eb5caec3-4e5a-448c-87c1-884008a6f106",
+        "chatSessionId": "sess_3d6d5d81-a146-4069-b1c3-fb9ce32a1612",
+        "timestamp": 1791221938597
+      },
+      {
+        "executionId": "55f9b2ec-ebed-4691-928c-b79877aeaf45",
+        "chatSessionId": "sess_3a7444ee-2652-4e64-8a79-92c0f5051be3",
+        "timestamp": 1791222322504
+      },
+      {
+        "executionId": "55f9b2ec-ebed-4691-928c-b79877aeaf45",
+        "chatSessionId": "sess_3a7444ee-2652-4e64-8a79-92c0f5051be3",
+        "timestamp": 1791222535535
+      }
+    ],
+    "8.2 Implement the publish pipeline that validates then delegates to the active provider": [
+      {
+        "executionId": "55f9b2ec-ebed-4691-928c-b79877aeaf45",
+        "chatSessionId": "sess_3a7444ee-2652-4e64-8a79-92c0f5051be3",
+        "timestamp": 1791222539336
+      },
+      {
+        "executionId": "55f9b2ec-ebed-4691-928c-b79877aeaf45",
+        "chatSessionId": "sess_3a7444ee-2652-4e64-8a79-92c0f5051be3",
+        "timestamp": 1791222835708
+      }
+    ],
+    "8.3 Write property test for invalid-envelope rejection": [
+      {
+        "executionId": "55f9b2ec-ebed-4691-928c-b79877aeaf45",
+        "chatSessionId": "sess_3a7444ee-2652-4e64-8a79-92c0f5051be3",
+        "timestamp": 1791222841523
+      },
+      {
+        "executionId": "55f9b2ec-ebed-4691-928c-b79877aeaf45",
+        "chatSessionId": "sess_3a7444ee-2652-4e64-8a79-92c0f5051be3",
+        "timestamp": 1791223297810
+      }
+    ],
+    "8.4 Write property test for correlation id generation": [
+      {
+        "executionId": "55f9b2ec-ebed-4691-928c-b79877aeaf45",
+        "chatSessionId": "sess_3a7444ee-2652-4e64-8a79-92c0f5051be3",
+        "timestamp": 1791222842049
+      },
+      {
+        "executionId": "55f9b2ec-ebed-4691-928c-b79877aeaf45",
+        "chatSessionId": "sess_3a7444ee-2652-4e64-8a79-92c0f5051be3",
+        "timestamp": 1791223300117
+      }
+    ],
+    "8.5 Write property test for field preservation through delivery": [
+      {
+        "executionId": "55f9b2ec-ebed-4691-928c-b79877aeaf45",
+        "chatSessionId": "sess_3a7444ee-2652-4e64-8a79-92c0f5051be3",
+        "timestamp": 1791222844060
+      },
+      {
+        "executionId": "55f9b2ec-ebed-4691-928c-b79877aeaf45",
+        "chatSessionId": "sess_3a7444ee-2652-4e64-8a79-92c0f5051be3",
+        "timestamp": 1791223301694
+      }
+    ],
+    "8. Implement correlation id handling and the publish pipeline (Application)": [
+      {
+        "executionId": "55f9b2ec-ebed-4691-928c-b79877aeaf45",
+        "chatSessionId": "sess_3a7444ee-2652-4e64-8a79-92c0f5051be3",
+        "timestamp": 1791223309228
+      }
+    ],
+    "9.1 Implement contract binding and the consumer host state machine": [
+      {
+        "executionId": "e8b52df6-7053-48d4-a790-ab929540e6c8",
+        "chatSessionId": "sess_62757e4b-b929-4b0f-85be-1b6fdd14888f",
+        "timestamp": 1791223404661
+      },
+      {
+        "executionId": "e8b52df6-7053-48d4-a790-ab929540e6c8",
+        "chatSessionId": "sess_62757e4b-b929-4b0f-85be-1b6fdd14888f",
+        "timestamp": 1791223712258
+      }
+    ],
+    "9.2 Write property test for unknown-contract rejection": [
+      {
+        "executionId": "e8b52df6-7053-48d4-a790-ab929540e6c8",
+        "chatSessionId": "sess_62757e4b-b929-4b0f-85be-1b6fdd14888f",
+        "timestamp": 1791223716707
+      },
+      {
+        "executionId": "e8b52df6-7053-48d4-a790-ab929540e6c8",
+        "chatSessionId": "sess_62757e4b-b929-4b0f-85be-1b6fdd14888f",
+        "timestamp": 1791224593170
+      }
+    ],
+    "9.3 Write property test for additive-versioning backward compatibility": [
+      {
+        "executionId": "e8b52df6-7053-48d4-a790-ab929540e6c8",
+        "chatSessionId": "sess_62757e4b-b929-4b0f-85be-1b6fdd14888f",
+        "timestamp": 1791223717706
+      },
+      {
+        "executionId": "e8b52df6-7053-48d4-a790-ab929540e6c8",
+        "chatSessionId": "sess_62757e4b-b929-4b0f-85be-1b6fdd14888f",
+        "timestamp": 1791224594283
+      }
+    ],
+    "9.4 Write property test for end-to-end correlation id propagation": [
+      {
+        "executionId": "e8b52df6-7053-48d4-a790-ab929540e6c8",
+        "chatSessionId": "sess_62757e4b-b929-4b0f-85be-1b6fdd14888f",
+        "timestamp": 1791223719158
+      },
+      {
+        "executionId": "e8b52df6-7053-48d4-a790-ab929540e6c8",
+        "chatSessionId": "sess_62757e4b-b929-4b0f-85be-1b6fdd14888f",
+        "timestamp": 1791224595153
+      }
+    ],
+    "9.5 Write unit test for consumer host state sequence": [
+      {
+        "executionId": "e8b52df6-7053-48d4-a790-ab929540e6c8",
+        "chatSessionId": "sess_62757e4b-b929-4b0f-85be-1b6fdd14888f",
+        "timestamp": 1791223720506
+      },
+      {
+        "executionId": "e8b52df6-7053-48d4-a790-ab929540e6c8",
+        "chatSessionId": "sess_62757e4b-b929-4b0f-85be-1b6fdd14888f",
+        "timestamp": 1791224596047
+      }
+    ],
+    "9. Implement the consume pipeline: contract binding and lifecycle (Application)": [
+      {
+        "executionId": "e8b52df6-7053-48d4-a790-ab929540e6c8",
+        "chatSessionId": "sess_62757e4b-b929-4b0f-85be-1b6fdd14888f",
+        "timestamp": 1791224596933
+      }
+    ],
+    "10. Implement a FakeMessagingProvider for core isolation (test support)": [
+      {
+        "executionId": "9bb19e1b-e223-4bc5-b102-850b0ad5be52",
+        "chatSessionId": "sess_3c72bd5c-1b18-47ce-ae25-abd865475164",
+        "timestamp": 1791224645706
+      },
+      {
+        "executionId": "9bb19e1b-e223-4bc5-b102-850b0ad5be52",
+        "chatSessionId": "sess_3c72bd5c-1b18-47ce-ae25-abd865475164",
+        "timestamp": 1791225431545
+      }
+    ],
+    "11.1 Implement `IFailureClassifier` and backoff computation": [
+      {
+        "executionId": "7623d698-61b5-402e-9206-fb50a21cf45a",
+        "chatSessionId": "sess_c19c85de-3ca1-476a-a7ff-ef6586afa5b5",
+        "timestamp": 1791225588229
+      },
+      {
+        "executionId": "7623d698-61b5-402e-9206-fb50a21cf45a",
+        "chatSessionId": "sess_c19c85de-3ca1-476a-a7ff-ef6586afa5b5",
+        "timestamp": 1791226132469
+      }
+    ],
+    "11.2 Write property test for bounded retry and dead-letter on exhaustion": [
+      {
+        "executionId": "7623d698-61b5-402e-9206-fb50a21cf45a",
+        "chatSessionId": "sess_c19c85de-3ca1-476a-a7ff-ef6586afa5b5",
+        "timestamp": 1791226133248
+      }
+    ],
+    "11.3 Write property test for backoff delay bounds": [
+      {
+        "executionId": "7623d698-61b5-402e-9206-fb50a21cf45a",
+        "chatSessionId": "sess_c19c85de-3ca1-476a-a7ff-ef6586afa5b5",
+        "timestamp": 1791226133933
+      }
+    ],
+    "11. Implement failure classification and retry/backoff policy (Application)": [
+      {
+        "executionId": "7623d698-61b5-402e-9206-fb50a21cf45a",
+        "chatSessionId": "sess_c19c85de-3ca1-476a-a7ff-ef6586afa5b5",
+        "timestamp": 1791226134692
+      }
+    ],
+    "12. Implement idempotency key derivation and consumption policy (Application)": [
+      {
+        "executionId": "d27a2744-a012-4ea0-9437-ee4cbefec4ce",
+        "chatSessionId": "sess_0c6a4e23-7f73-40a9-a853-a0fc2e80cde9",
+        "timestamp": 1791226250670
+      },
+      {
+        "executionId": "d27a2744-a012-4ea0-9437-ee4cbefec4ce",
+        "chatSessionId": "sess_0c6a4e23-7f73-40a9-a853-a0fc2e80cde9",
+        "timestamp": 1791226941812
+      }
+    ],
+    "12.1 Implement `IIdempotencyKeyProvider` and the idempotent consume gate": [
+      {
+        "executionId": "d27a2744-a012-4ea0-9437-ee4cbefec4ce",
+        "chatSessionId": "sess_0c6a4e23-7f73-40a9-a853-a0fc2e80cde9",
+        "timestamp": 1791226938819
+      }
+    ],
+    "12.2 Write property test for deterministic idempotency keys": [
+      {
+        "executionId": "d27a2744-a012-4ea0-9437-ee4cbefec4ce",
+        "chatSessionId": "sess_0c6a4e23-7f73-40a9-a853-a0fc2e80cde9",
+        "timestamp": 1791226940316
+      }
+    ],
+    "12.3 Write property test for underivable-key rejection": [
+      {
+        "executionId": "d27a2744-a012-4ea0-9437-ee4cbefec4ce",
+        "chatSessionId": "sess_0c6a4e23-7f73-40a9-a853-a0fc2e80cde9",
+        "timestamp": 1791226941001
+      }
+    ],
+    "13.1 Implement dead-letter routing and the DeadLetterMessage payload": [
+      {
+        "executionId": "5a2dacc7-c6a8-49ed-976b-89dd901afa15",
+        "chatSessionId": "sess_4100fa05-25c9-49c5-9fd1-ce4590dae33b",
+        "timestamp": 1791242110728
+      },
+      {
+        "executionId": "5a2dacc7-c6a8-49ed-976b-89dd901afa15",
+        "chatSessionId": "sess_4100fa05-25c9-49c5-9fd1-ce4590dae33b",
+        "timestamp": 1791242808633
+      }
+    ],
+    "13.2 Write property test for dead-letter preservation of message and context": [
+      {
+        "executionId": "5a2dacc7-c6a8-49ed-976b-89dd901afa15",
+        "chatSessionId": "sess_4100fa05-25c9-49c5-9fd1-ce4590dae33b",
+        "timestamp": 1791242812411
+      },
+      {
+        "executionId": "5a2dacc7-c6a8-49ed-976b-89dd901afa15",
+        "chatSessionId": "sess_4100fa05-25c9-49c5-9fd1-ce4590dae33b",
+        "timestamp": 1791245769735
+      }
+    ],
+    "13.3 Write property test for poison payloads skipping retry": [
+      {
+        "executionId": "5a2dacc7-c6a8-49ed-976b-89dd901afa15",
+        "chatSessionId": "sess_4100fa05-25c9-49c5-9fd1-ce4590dae33b",
+        "timestamp": 1791242813690
+      },
+      {
+        "executionId": "5a2dacc7-c6a8-49ed-976b-89dd901afa15",
+        "chatSessionId": "sess_4100fa05-25c9-49c5-9fd1-ce4590dae33b",
+        "timestamp": 1791245771436
+      }
+    ],
+    "13.4 Write property test for routing-failure keeping message unacknowledged": [
+      {
+        "executionId": "5a2dacc7-c6a8-49ed-976b-89dd901afa15",
+        "chatSessionId": "sess_4100fa05-25c9-49c5-9fd1-ce4590dae33b",
+        "timestamp": 1791242814774
+      },
+      {
+        "executionId": "5a2dacc7-c6a8-49ed-976b-89dd901afa15",
+        "chatSessionId": "sess_4100fa05-25c9-49c5-9fd1-ce4590dae33b",
+        "timestamp": 1791245772583
+      }
+    ],
+    "13.5 Write unit tests for dead-letter emission and per-mode target": [
+      {
+        "executionId": "5a2dacc7-c6a8-49ed-976b-89dd901afa15",
+        "chatSessionId": "sess_4100fa05-25c9-49c5-9fd1-ce4590dae33b",
+        "timestamp": 1791242816011
+      },
+      {
+        "executionId": "5a2dacc7-c6a8-49ed-976b-89dd901afa15",
+        "chatSessionId": "sess_4100fa05-25c9-49c5-9fd1-ce4590dae33b",
+        "timestamp": 1791245774129
+      }
+    ],
+    "13. Implement dead-letter routing (Application)": [
+      {
+        "executionId": "5a2dacc7-c6a8-49ed-976b-89dd901afa15",
+        "chatSessionId": "sess_4100fa05-25c9-49c5-9fd1-ce4590dae33b",
+        "timestamp": 1791245774565
+      }
+    ],
+    "14. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "08a49dc5-5264-4ce3-ad14-0b4c58651284",
+        "chatSessionId": "sess_e116f938-7d72-437b-96ba-2a05d3676270",
+        "timestamp": 1791245896267
+      },
+      {
+        "executionId": "08a49dc5-5264-4ce3-ad14-0b4c58651284",
+        "chatSessionId": "sess_e116f938-7d72-437b-96ba-2a05d3676270",
+        "timestamp": 1791246042542
+      },
+      {
+        "executionId": "230252d8-bae4-47e1-8d6d-2e24a7d6705d",
+        "chatSessionId": "sess_78a7aa61-cf25-4ab8-85aa-d700c44ddfe4",
+        "timestamp": 1791246059058
+      },
+      {
+        "executionId": "0b756b16-9a38-434b-ba04-54914635c852",
+        "chatSessionId": "sess_83a0aa48-822e-430b-ad5e-276fb1a5b790",
+        "timestamp": 1791262808406
+      },
+      {
+        "executionId": "0b756b16-9a38-434b-ba04-54914635c852",
+        "chatSessionId": "sess_83a0aa48-822e-430b-ad5e-276fb1a5b790",
+        "timestamp": 1791262950855
+      }
+    ],
+    "15.1 Implement structured logging, metrics, tracing, and redaction": [
+      {
+        "executionId": "80bab42f-a6d5-4db4-9624-7149808f8c6e",
+        "chatSessionId": "sess_eb1e0f51-d3e5-467e-99aa-fe71b466a2d7",
+        "timestamp": 1791262997669
+      },
+      {
+        "executionId": "80bab42f-a6d5-4db4-9624-7149808f8c6e",
+        "chatSessionId": "sess_eb1e0f51-d3e5-467e-99aa-fe71b466a2d7",
+        "timestamp": 1791263334282
+      }
+    ],
+    "15.2 Write property test for monotonic counting": [
+      {
+        "executionId": "80bab42f-a6d5-4db4-9624-7149808f8c6e",
+        "chatSessionId": "sess_eb1e0f51-d3e5-467e-99aa-fe71b466a2d7",
+        "timestamp": 1791263338559
+      },
+      {
+        "executionId": "80bab42f-a6d5-4db4-9624-7149808f8c6e",
+        "chatSessionId": "sess_eb1e0f51-d3e5-467e-99aa-fe71b466a2d7",
+        "timestamp": 1791263572236
+      }
+    ],
+    "15.3 Write property test for redaction": [
+      {
+        "executionId": "80bab42f-a6d5-4db4-9624-7149808f8c6e",
+        "chatSessionId": "sess_eb1e0f51-d3e5-467e-99aa-fe71b466a2d7",
+        "timestamp": 1791263339933
+      },
+      {
+        "executionId": "80bab42f-a6d5-4db4-9624-7149808f8c6e",
+        "chatSessionId": "sess_eb1e0f51-d3e5-467e-99aa-fe71b466a2d7",
+        "timestamp": 1791263573230
+      }
+    ],
+    "15.4 Write property test for non-blocking observability": [
+      {
+        "executionId": "80bab42f-a6d5-4db4-9624-7149808f8c6e",
+        "chatSessionId": "sess_eb1e0f51-d3e5-467e-99aa-fe71b466a2d7",
+        "timestamp": 1791263340904
+      },
+      {
+        "executionId": "80bab42f-a6d5-4db4-9624-7149808f8c6e",
+        "chatSessionId": "sess_eb1e0f51-d3e5-467e-99aa-fe71b466a2d7",
+        "timestamp": 1791263574087
+      }
+    ],
+    "15.5 Write unit test for structured log fields": [
+      {
+        "executionId": "80bab42f-a6d5-4db4-9624-7149808f8c6e",
+        "chatSessionId": "sess_eb1e0f51-d3e5-467e-99aa-fe71b466a2d7",
+        "timestamp": 1791263342408
+      },
+      {
+        "executionId": "80bab42f-a6d5-4db4-9624-7149808f8c6e",
+        "chatSessionId": "sess_eb1e0f51-d3e5-467e-99aa-fe71b466a2d7",
+        "timestamp": 1791263575168
+      }
+    ],
+    "15. Implement observability (Application)": [
+      {
+        "executionId": "80bab42f-a6d5-4db4-9624-7149808f8c6e",
+        "chatSessionId": "sess_eb1e0f51-d3e5-467e-99aa-fe71b466a2d7",
+        "timestamp": 1791263575765
+      }
+    ],
+    "16.1 Implement the EF DbContext and the two tables": [
+      {
+        "executionId": "c4bec797-cd79-4f01-bcff-b2ace7c74305",
+        "chatSessionId": "sess_a0ab242f-78cb-4f5c-a2be-e17e2a14a7fb",
+        "timestamp": 1791263706987
+      },
+      {
+        "executionId": "c4bec797-cd79-4f01-bcff-b2ace7c74305",
+        "chatSessionId": "sess_a0ab242f-78cb-4f5c-a2be-e17e2a14a7fb",
+        "timestamp": 1791263974148
+      }
+    ],
+    "16.2 Implement `IIdempotencyStore` over EF": [
+      {
+        "executionId": "c4bec797-cd79-4f01-bcff-b2ace7c74305",
+        "chatSessionId": "sess_a0ab242f-78cb-4f5c-a2be-e17e2a14a7fb",
+        "timestamp": 1791263979030
+      },
+      {
+        "executionId": "c4bec797-cd79-4f01-bcff-b2ace7c74305",
+        "chatSessionId": "sess_a0ab242f-78cb-4f5c-a2be-e17e2a14a7fb",
+        "timestamp": 1791264298299
+      }
+    ],
+    "16.3 Write property test (Testcontainer) for exactly-once side effects": [
+      {
+        "executionId": "c4bec797-cd79-4f01-bcff-b2ace7c74305",
+        "chatSessionId": "sess_a0ab242f-78cb-4f5c-a2be-e17e2a14a7fb",
+        "timestamp": 1791264319086
+      },
+      {
+        "executionId": "c4bec797-cd79-4f01-bcff-b2ace7c74305",
+        "chatSessionId": "sess_a0ab242f-78cb-4f5c-a2be-e17e2a14a7fb",
+        "timestamp": 1791265070029
+      }
+    ],
+    "16.4 Write property test (Testcontainer) for failed-record never acknowledging": [
+      {
+        "executionId": "c4bec797-cd79-4f01-bcff-b2ace7c74305",
+        "chatSessionId": "sess_a0ab242f-78cb-4f5c-a2be-e17e2a14a7fb",
+        "timestamp": 1791265074525
+      },
+      {
+        "executionId": "c4bec797-cd79-4f01-bcff-b2ace7c74305",
+        "chatSessionId": "sess_a0ab242f-78cb-4f5c-a2be-e17e2a14a7fb",
+        "timestamp": 1791265295023
+      }
+    ],
+    "16.5 Write unit test for retention boundary": [
+      {
+        "executionId": "c4bec797-cd79-4f01-bcff-b2ace7c74305",
+        "chatSessionId": "sess_a0ab242f-78cb-4f5c-a2be-e17e2a14a7fb",
+        "timestamp": 1791265075226
+      },
+      {
+        "executionId": "c4bec797-cd79-4f01-bcff-b2ace7c74305",
+        "chatSessionId": "sess_a0ab242f-78cb-4f5c-a2be-e17e2a14a7fb",
+        "timestamp": 1791265296374
+      }
+    ],
+    "16. Implement EF persistence: outbox and idempotency stores (Infrastructure)": [
+      {
+        "executionId": "c4bec797-cd79-4f01-bcff-b2ace7c74305",
+        "chatSessionId": "sess_a0ab242f-78cb-4f5c-a2be-e17e2a14a7fb",
+        "timestamp": 1791265296871
+      }
+    ],
+    "17.1 Implement transactional outbox recording and the dispatcher loop": [
+      {
+        "executionId": "d55201a2-ee92-46e7-9740-a02672645c72",
+        "chatSessionId": "sess_e6702047-c6f1-4107-bb8a-f0e0f5a578e9",
+        "timestamp": 1791265378022
+      },
+      {
+        "executionId": "d55201a2-ee92-46e7-9740-a02672645c72",
+        "chatSessionId": "sess_e6702047-c6f1-4107-bb8a-f0e0f5a578e9",
+        "timestamp": 1791265720465
+      }
+    ],
+    "17.2 Write property test (Testcontainer) for at-least-once delivery": [
+      {
+        "executionId": "d55201a2-ee92-46e7-9740-a02672645c72",
+        "chatSessionId": "sess_e6702047-c6f1-4107-bb8a-f0e0f5a578e9",
+        "timestamp": 1791265725288
+      },
+      {
+        "executionId": "d55201a2-ee92-46e7-9740-a02672645c72",
+        "chatSessionId": "sess_e6702047-c6f1-4107-bb8a-f0e0f5a578e9",
+        "timestamp": 1791265964630
+      }
+    ],
+    "17.3 Write property test (Testcontainer) for retained and bounded failures": [
+      {
+        "executionId": "d55201a2-ee92-46e7-9740-a02672645c72",
+        "chatSessionId": "sess_e6702047-c6f1-4107-bb8a-f0e0f5a578e9",
+        "timestamp": 1791265726785
+      },
+      {
+        "executionId": "d55201a2-ee92-46e7-9740-a02672645c72",
+        "chatSessionId": "sess_e6702047-c6f1-4107-bb8a-f0e0f5a578e9",
+        "timestamp": 1791265966300
+      }
+    ],
+    "17. Implement the Outbox_Dispatcher (Application + Infrastructure)": [
+      {
+        "executionId": "d55201a2-ee92-46e7-9740-a02672645c72",
+        "chatSessionId": "sess_e6702047-c6f1-4107-bb8a-f0e0f5a578e9",
+        "timestamp": 1791265966883
+      }
+    ],
+    "18.1 Implement liveness/readiness logic and graceful shutdown": [
+      {
+        "executionId": "4393cf2e-cd58-41a0-b6bc-f3e79e54e48f",
+        "chatSessionId": "sess_c5d07b60-b4df-4479-aee3-23e3c9250691",
+        "timestamp": 1791266038602
+      },
+      {
+        "executionId": "4393cf2e-cd58-41a0-b6bc-f3e79e54e48f",
+        "chatSessionId": "sess_c5d07b60-b4df-4479-aee3-23e3c9250691",
+        "timestamp": 1791266315198
+      }
+    ],
+    "18.2 Write property test for readiness reflecting transport reachability": [
+      {
+        "executionId": "4393cf2e-cd58-41a0-b6bc-f3e79e54e48f",
+        "chatSessionId": "sess_c5d07b60-b4df-4479-aee3-23e3c9250691",
+        "timestamp": 1791266320679
+      },
+      {
+        "executionId": "4393cf2e-cd58-41a0-b6bc-f3e79e54e48f",
+        "chatSessionId": "sess_c5d07b60-b4df-4479-aee3-23e3c9250691",
+        "timestamp": 1791266554008
+      }
+    ],
+    "18.3 Write property test for shutdown incomplete-count recording": [
+      {
+        "executionId": "4393cf2e-cd58-41a0-b6bc-f3e79e54e48f",
+        "chatSessionId": "sess_c5d07b60-b4df-4479-aee3-23e3c9250691",
+        "timestamp": 1791266321883
+      },
+      {
+        "executionId": "4393cf2e-cd58-41a0-b6bc-f3e79e54e48f",
+        "chatSessionId": "sess_c5d07b60-b4df-4479-aee3-23e3c9250691",
+        "timestamp": 1791266555374
+      }
+    ],
+    "18.4 Write unit test for stop-accepting-new-messages on shutdown": [
+      {
+        "executionId": "4393cf2e-cd58-41a0-b6bc-f3e79e54e48f",
+        "chatSessionId": "sess_c5d07b60-b4df-4479-aee3-23e3c9250691",
+        "timestamp": 1791266323301
+      },
+      {
+        "executionId": "4393cf2e-cd58-41a0-b6bc-f3e79e54e48f",
+        "chatSessionId": "sess_c5d07b60-b4df-4479-aee3-23e3c9250691",
+        "timestamp": 1791266556312
+      }
+    ],
+    "18. Implement lifecycle, health, and readiness logic (Application)": [
+      {
+        "executionId": "4393cf2e-cd58-41a0-b6bc-f3e79e54e48f",
+        "chatSessionId": "sess_c5d07b60-b4df-4479-aee3-23e3c9250691",
+        "timestamp": 1791266556702
+      }
+    ],
+    "19. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "f0820cd4-c367-4525-a39a-d6c9fbc9f007",
+        "chatSessionId": "sess_ef33c4f9-6c42-4dda-a300-f5cd3f1c7b34",
+        "timestamp": 1791266744134
+      },
+      {
+        "executionId": "f0820cd4-c367-4525-a39a-d6c9fbc9f007",
+        "chatSessionId": "sess_ef33c4f9-6c42-4dda-a300-f5cd3f1c7b34",
+        "timestamp": 1791268728985
+      }
+    ],
+    "20.1 Implement the MassTransit adapter shell (Pub/Sub + Queue)": [
+      {
+        "executionId": "e4568520-8418-494f-adfa-d8beedca771e",
+        "chatSessionId": "sess_21140db8-18bd-4611-a626-25e8ded38a80",
+        "timestamp": 1791340184222
+      },
+      {
+        "executionId": "e4568520-8418-494f-adfa-d8beedca771e",
+        "chatSessionId": "sess_21140db8-18bd-4611-a626-25e8ded38a80",
+        "timestamp": 1791343036432
+      }
+    ],
+    "20.2 Implement the Kafka-native adapter shell (Streaming)": [
+      {
+        "executionId": "e4568520-8418-494f-adfa-d8beedca771e",
+        "chatSessionId": "sess_21140db8-18bd-4611-a626-25e8ded38a80",
+        "timestamp": 1791340185309
+      },
+      {
+        "executionId": "e4568520-8418-494f-adfa-d8beedca771e",
+        "chatSessionId": "sess_21140db8-18bd-4611-a626-25e8ded38a80",
+        "timestamp": 1791343039010
+      }
+    ],
+    "20.3 Implement the Batch adapter shell (Batch Processing)": [
+      {
+        "executionId": "e4568520-8418-494f-adfa-d8beedca771e",
+        "chatSessionId": "sess_21140db8-18bd-4611-a626-25e8ded38a80",
+        "timestamp": 1791340187377
+      },
+      {
+        "executionId": "e4568520-8418-494f-adfa-d8beedca771e",
+        "chatSessionId": "sess_21140db8-18bd-4611-a626-25e8ded38a80",
+        "timestamp": 1791343039942
+      }
+    ],
+    "21.1 Implement provider registration extension methods": [
+      {
+        "executionId": "82d97d67-a4e7-4c1f-8c9c-813c9a528ddf",
+        "chatSessionId": "sess_c95ec140-a5a8-47d9-ac10-d867fa8b3292",
+        "timestamp": 1791343523327
+      },
+      {
+        "executionId": "82d97d67-a4e7-4c1f-8c9c-813c9a528ddf",
+        "chatSessionId": "sess_c95ec140-a5a8-47d9-ac10-d867fa8b3292",
+        "timestamp": 1791344370951
+      }
+    ],
+    "21.2 Wire startup validation, resolution, and the publish/consume pipeline together": [
+      {
+        "executionId": "82d97d67-a4e7-4c1f-8c9c-813c9a528ddf",
+        "chatSessionId": "sess_c95ec140-a5a8-47d9-ac10-d867fa8b3292",
+        "timestamp": 1791344375585
+      },
+      {
+        "executionId": "82d97d67-a4e7-4c1f-8c9c-813c9a528ddf",
+        "chatSessionId": "sess_c95ec140-a5a8-47d9-ac10-d867fa8b3292",
+        "timestamp": 1791345218307
+      }
+    ],
+    "21.3 Write architecture test for inward dependency rule": [
+      {
+        "executionId": "82d97d67-a4e7-4c1f-8c9c-813c9a528ddf",
+        "chatSessionId": "sess_c95ec140-a5a8-47d9-ac10-d867fa8b3292",
+        "timestamp": 1791345223638
+      },
+      {
+        "executionId": "82d97d67-a4e7-4c1f-8c9c-813c9a528ddf",
+        "chatSessionId": "sess_c95ec140-a5a8-47d9-ac10-d867fa8b3292",
+        "timestamp": 1791345461737
+      }
+    ],
+    "21. Implement use-what-you-need DI registration and final wiring (Infrastructure + Application)": [
+      {
+        "executionId": "82d97d67-a4e7-4c1f-8c9c-813c9a528ddf",
+        "chatSessionId": "sess_c95ec140-a5a8-47d9-ac10-d867fa8b3292",
+        "timestamp": 1791345463041
+      }
+    ],
+    "22.1 Write PostgreSQL outbox atomicity integration test": [
+      {
+        "executionId": "b2d0d0aa-2308-4c58-8735-33faaa2a8eb8",
+        "chatSessionId": "sess_0d0183b8-9db2-4294-83e0-bd6ccd4f82b3",
+        "timestamp": 1791345556284
+      },
+      {
+        "executionId": "b2d0d0aa-2308-4c58-8735-33faaa2a8eb8",
+        "chatSessionId": "sess_0d0183b8-9db2-4294-83e0-bd6ccd4f82b3",
+        "timestamp": 1791347012833
+      }
+    ],
+    "22.2 Write RabbitMQ (MassTransit) round-trip and dead-letter integration test": [
+      {
+        "executionId": "b2d0d0aa-2308-4c58-8735-33faaa2a8eb8",
+        "chatSessionId": "sess_0d0183b8-9db2-4294-83e0-bd6ccd4f82b3",
+        "timestamp": 1791345557773
+      },
+      {
+        "executionId": "b2d0d0aa-2308-4c58-8735-33faaa2a8eb8",
+        "chatSessionId": "sess_0d0183b8-9db2-4294-83e0-bd6ccd4f82b3",
+        "timestamp": 1791347014405
+      }
+    ],
+    "22.3 Write Kafka at-least-once integration test": [
+      {
+        "executionId": "b2d0d0aa-2308-4c58-8735-33faaa2a8eb8",
+        "chatSessionId": "sess_0d0183b8-9db2-4294-83e0-bd6ccd4f82b3",
+        "timestamp": 1791345558713
+      },
+      {
+        "executionId": "b2d0d0aa-2308-4c58-8735-33faaa2a8eb8",
+        "chatSessionId": "sess_0d0183b8-9db2-4294-83e0-bd6ccd4f82b3",
+        "timestamp": 1791347015097
+      }
+    ],
+    "22.4 Write OpenTelemetry span-linking integration test": [
+      {
+        "executionId": "b2d0d0aa-2308-4c58-8735-33faaa2a8eb8",
+        "chatSessionId": "sess_0d0183b8-9db2-4294-83e0-bd6ccd4f82b3",
+        "timestamp": 1791345560042
+      },
+      {
+        "executionId": "b2d0d0aa-2308-4c58-8735-33faaa2a8eb8",
+        "chatSessionId": "sess_0d0183b8-9db2-4294-83e0-bd6ccd4f82b3",
+        "timestamp": 1791347015964
+      }
+    ],
+    "22.5 Write endpoint and timing integration tests": [
+      {
+        "executionId": "b2d0d0aa-2308-4c58-8735-33faaa2a8eb8",
+        "chatSessionId": "sess_0d0183b8-9db2-4294-83e0-bd6ccd4f82b3",
+        "timestamp": 1791345561070
+      },
+      {
+        "executionId": "b2d0d0aa-2308-4c58-8735-33faaa2a8eb8",
+        "chatSessionId": "sess_0d0183b8-9db2-4294-83e0-bd6ccd4f82b3",
+        "timestamp": 1791347016634
+      }
+    ],
+    "22. Integration tests (Testcontainers)": [
+      {
+        "executionId": "b2d0d0aa-2308-4c58-8735-33faaa2a8eb8",
+        "chatSessionId": "sess_0d0183b8-9db2-4294-83e0-bd6ccd4f82b3",
+        "timestamp": 1791347017234
+      }
+    ],
+    "23. Final checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "663d6f32-bbe5-4072-9346-8b5db1facacf",
+        "chatSessionId": "sess_f826d96b-1673-4034-a24e-04eba69b4b2c",
+        "timestamp": 1791347082134
+      },
+      {
+        "executionId": "663d6f32-bbe5-4072-9346-8b5db1facacf",
+        "chatSessionId": "sess_f826d96b-1673-4034-a24e-04eba69b4b2c",
+        "timestamp": 1791349046527
+      }
+    ]
+  }
+}
