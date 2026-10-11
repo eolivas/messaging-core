@@ -23,7 +23,7 @@ public sealed record ShutdownResult
             throw new ArgumentOutOfRangeException(
                 nameof(incompleteInFlightCount),
                 incompleteInFlightCount,
-                "The incomplete in-flight count must be a non-negative integer (Req 10.7).");
+                "The incomplete in-flight count must be non-negative; a negative value indicates an in-flight tracking bug.");
         }
 
         TimedOut = timedOut;
