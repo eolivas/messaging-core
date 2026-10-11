@@ -9,9 +9,9 @@ public enum BackoffStrategy
     /// <summary>Constant delay between every attempt.</summary>
     Fixed,
 
-    /// <summary>Delay grows exponentially with the attempt number (the default).</summary>
+    /// <summary>Delay grows exponentially with the attempt number.</summary>
     Exponential,
 
-    /// <summary>Exponential growth with randomized jitter to avoid retry stampedes.</summary>
+    /// <summary>Exponential growth with randomized jitter to avoid retry stampedes (the default).</summary>
     ExponentialWithJitter,
 }
