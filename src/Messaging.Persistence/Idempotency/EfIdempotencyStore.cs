@@ -1,4 +1,5 @@
 using Messaging.Abstractions;
+using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 
 namespace Messaging.Persistence.Idempotency;
@@ -120,13 +121,23 @@ public sealed class EfIdempotencyStore : IIdempotencyStore
         try
         {
             // Parameterized INSERT ... ON CONFLICT DO NOTHING: a concurrent duplicate cannot
-            // double-insert and a redelivered-but-recorded key is a no-op (Req 7.4). Interpolated
-            // holes become bound SQL parameters — never concatenated text (code-conventions).
-            await _dbContext.Database.ExecuteSqlInterpolatedAsync(
-                $@"INSERT INTO {IdempotencyRecordConfiguration.TableName} (idempotency_key, correlation_id, processed_at_utc, expires_at_utc)
-                   VALUES ({idempotencyKey}, {correlationId}, {processedAtUtc}, {expiresAtUtc})
+            // double-insert and a redelivered-but-recorded key is a no-op (Req 7.4).
+            //
+            // The table name is a SQL *identifier*, not a value, so it cannot be a bound parameter:
+            // PostgreSQL rejects "INSERT INTO $1 ..." with 42601. It is a compile-time constant we
+            // own (never user input), so it is composed into the SQL text. Only the four values
+            // become bound parameters ($1..$4) — no value data is ever concatenated into SQL
+            // (code-conventions: parameterize untrusted/value data; identifiers can't be parameters).
+            var sql = FormattableStringFactory.Create(
+                @"INSERT INTO " + IdempotencyRecordConfiguration.TableName + @" (idempotency_key, correlation_id, processed_at_utc, expires_at_utc)
+                   VALUES ({0}, {1}, {2}, {3})
                    ON CONFLICT (idempotency_key) DO NOTHING",
-                cancellationToken).ConfigureAwait(false);
+                idempotencyKey,
+                correlationId,
+                processedAtUtc,
+                expiresAtUtc);
+
+            await _dbContext.Database.ExecuteSqlInterpolatedAsync(sql, cancellationToken).ConfigureAwait(false);
         }
         catch (OperationCanceledException)
         {
