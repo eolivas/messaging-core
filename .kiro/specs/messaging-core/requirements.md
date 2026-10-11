@@ -116,7 +116,7 @@ Scope boundary (what this spec does NOT cover):
 
 #### Acceptance Criteria
 
-1. THE Messaging_Core SHALL read Retry_Policy settings from Messaging_Configuration, including a maximum attempt count bounded from 1 to 100 (default 5) and a backoff strategy enumerated as fixed, exponential, or exponential-with-jitter (default exponential).
+1. THE Messaging_Core SHALL read Retry_Policy settings from Messaging_Configuration, including a maximum attempt count bounded from 1 to 100 (default 5) and a backoff strategy enumerated as fixed, exponential, or exponential-with-jitter (default exponential-with-jitter).
 2. IF processing a message fails with a transient error, where transient errors are limited to timeout, connection failure, and downstream-unavailable, THEN THE Messaging_Core SHALL retry processing according to the configured Retry_Policy up to the configured maximum attempt count.
 3. IF processing a message fails with a non-transient error, where non-transient errors include validation failure and malformed payload, THEN THE Messaging_Core SHALL route the message to the Dead_Letter_Sink without performing any retry attempt.
 4. WHILE retrying a failed message, THE Messaging_Core SHALL apply the configured backoff delay between consecutive attempts, where the per-attempt delay is bounded from 1 second to 300 seconds.

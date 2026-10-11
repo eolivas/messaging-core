@@ -484,7 +484,7 @@ public sealed record MessagingConfiguration
 public sealed record RetryPolicyConfig
 {
     public int MaxAttempts { get; init; } = 5;              // 1..100 (Req 6.1)
-    public BackoffStrategy Backoff { get; init; } = BackoffStrategy.Exponential; // (Req 6.1)
+    public BackoffStrategy Backoff { get; init; } = BackoffStrategy.ExponentialWithJitter; // (Req 6.1)
     public int PerAttemptDelaySeconds { get; init; } = 5;   // 1..300 (Req 6.4)
 }
 
@@ -679,7 +679,7 @@ MassTransit retry/redelivery (Pub/Sub + Queue), Kafka offset/consumer-group repr
   Req 6.3). Classification is core logic; it decides *whether* the transport should redeliver.
 - `NonTransient` → straight to dead-letter, **no retry** (Req 6.3).
 - `Transient` → retry per `RetryPolicyConfig`: `MaxAttempts` (1–100, default 5), backoff
-  (fixed / exponential / exponential-with-jitter, default exponential), per-attempt delay
+  (fixed / exponential / exponential-with-jitter, default exponential-with-jitter), per-attempt delay
   clamped 1–300s (Req 6.1, 6.4), realized by the transport's native retry mechanism. On
   exhaustion → dead-letter (Req 6.5).
 - Delivery semantics documented as **at-least-once** (Req 6.7); idempotent consumers absorb
