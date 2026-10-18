@@ -6,6 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <!--
+    Expose the internal bus-seam constructor to the unit test project so RabbitMqBusAdapter's
+    publish/start/stop/reachability behaviors can be exercised against a fake IBusControl with no
+    live broker. The public Create factory stays the only production entry point.
+  -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="Messaging.MassTransit.Tests" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Messaging.Abstractions\Messaging.Abstractions.csproj" />
     <ProjectReference Include="..\Messaging\Messaging.csproj" />
@@ -19,6 +28,7 @@
   -->
   <ItemGroup>
     <PackageReference Include="MassTransit" Version="8.5.11" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.11" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
   </ItemGroup>

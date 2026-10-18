@@ -32,6 +32,13 @@ public sealed class MassTransitProviderSettings
     public const string HostSettingName = "MassTransit:Host";
 
     /// <summary>
+    /// The permitted connection-string format for the RabbitMQ transport, reported as the
+    /// connection setting's permitted-format hint in startup validation. TLS is selected by the
+    /// <c>amqps://</c> scheme. Contains no secret-bearing value — only the expected shape.
+    /// </summary>
+    public const string RabbitMqConnectionFormat = "amqp:// or amqps:// URI";
+
+    /// <summary>
     /// Creates the settings for the MassTransit adapter.
     /// </summary>
     /// <param name="transport">The transport MassTransit is configured against.</param>
@@ -44,7 +51,10 @@ public sealed class MassTransitProviderSettings
     /// hostname). Falls back to the transport name when not supplied.
     /// </param>
     /// <exception cref="ArgumentException">
-    /// If a non-in-memory transport is configured without a connection string.
+    /// If a non-in-memory transport is configured without a connection string, or if the RabbitMQ
+    /// transport is configured with a connection string that is empty, whitespace-only, or not a
+    /// parseable AMQP(S) URI (Req 12.4). The message names the setting only and never includes the
+    /// configured connection-string value (Req 3.5).
     /// </exception>
     public MassTransitProviderSettings(
         MassTransitTransport transport,
@@ -60,8 +70,45 @@ public sealed class MassTransitProviderSettings
                 nameof(connectionString));
         }
 
+        // RabbitMQ reaches its broker over an AMQP(S) URI. A present connection string that is empty,
+        // whitespace-only, or not a parseable amqp(s):// URI is invalid and must stop startup before a
+        // processing-ready state (Req 12.4). The configured value is secret-bearing, so the failure is
+        // reported by setting name only and the value is never emitted into the message (Req 3.5).
+        if (transport == MassTransitTransport.RabbitMq && !IsRabbitMqConnectionFormatValid(connectionString))
+        {
+            throw new ArgumentException(
+                $"The '{ConnectionSettingName}' for transport '{transport}' must be a parseable " +
+                $"{RabbitMqConnectionFormat}.",
+                nameof(connectionString));
+        }
+
         ConnectionString = connectionString ?? string.Empty;
         Host = string.IsNullOrWhiteSpace(host) ? transport.ToString() : host!;
+    }
+
+    /// <summary>
+    /// Tests whether <paramref name="connectionString"/> is a valid RabbitMQ broker connection string:
+    /// present, non-whitespace, and parseable as an absolute URI whose scheme is <c>amqp</c> or
+    /// <c>amqps</c> (TLS selected by <c>amqps</c>) (Req 12.4). Takes only the raw value and returns a
+    /// boolean, so it can be used both by construction and by callers that must decide validity without
+    /// handling or logging the secret-bearing value.
+    /// </summary>
+    /// <param name="connectionString">The candidate connection string.</param>
+    /// <returns><c>true</c> when the value is a parseable AMQP(S) URI; otherwise <c>false</c>.</returns>
+    public static bool IsRabbitMqConnectionFormatValid(string? connectionString)
+    {
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            return false;
+        }
+
+        if (!Uri.TryCreate(connectionString, UriKind.Absolute, out var uri))
+        {
+            return false;
+        }
+
+        return string.Equals(uri.Scheme, "amqp", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(uri.Scheme, "amqps", StringComparison.OrdinalIgnoreCase);
     }
 
     /// <summary>The transport MassTransit is configured against.</summary>
@@ -85,6 +132,13 @@ public sealed class MassTransitProviderSettings
             ", ",
             Enum.GetNames<MassTransitTransport>());
 
+        // For RabbitMQ the connection string must be a parseable AMQP(S) URI, so the descriptor carries
+        // that format as its permitted-format hint; the hint is non-secret and names the expected shape
+        // only (Req 3.5). Other broker transports keep the generic non-empty hint.
+        var connectionFormatHint = Transport == MassTransitTransport.RabbitMq
+            ? RabbitMqConnectionFormat
+            : "non-empty connection string";
+
         return new[]
         {
             new ProviderSettingDescriptor(
@@ -94,7 +148,7 @@ public sealed class MassTransitProviderSettings
             new ProviderSettingDescriptor(
                 ConnectionSettingName,
                 Required: Transport != MassTransitTransport.InMemory,
-                PermittedValuesOrRange: "non-empty connection string"),
+                PermittedValuesOrRange: connectionFormatHint),
         };
     }
 }

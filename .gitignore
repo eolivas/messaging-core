@@ -15,3 +15,5 @@ TestResults/
 # NuGet
 *.nupkg
 packages/
+# macOS
+.DS_Store
