@@ -16,10 +16,11 @@ namespace Messaging.MassTransit.Tests;
 /// <list type="number">
 /// <item><b>Publish/consume round-trip:</b> a message published through the publisher shell is
 /// delivered to the consumer over RabbitMQ with every envelope field preserved (Req 4.4).</item>
-/// <item><b>Dead-letter on retry exhaustion (Req 8.1):</b> a handler that keeps failing transiently
-/// exhausts the uniform retry policy; the core routes the message to the dead-letter sink
-/// <em>within 5 seconds</em> of the final failed attempt, and the message then leaves the active
-/// processing pipeline (the broker queue drains and the handler is never invoked again).</item>
+/// <item><b>Dead-letter on retry exhaustion (Req 8.4, 11.5):</b> a handler that keeps failing
+/// transiently exhausts the uniform retry policy; the core routes the poison message to the
+/// dead-letter sink <em>within 5 seconds</em> of the final failed attempt, the message is not
+/// redelivered to the application handler, and it is not reported in-flight — the broker's receive
+/// queue drains to zero ready messages, so the message has left the active processing pipeline.</item>
 /// </list>
 /// The one-engine / real-dependency rule forbids the MassTransit in-memory transport here: both
 /// behaviours are broker behaviours, so only a real RabbitMQ demonstrates them.
@@ -54,7 +55,7 @@ public sealed class MassTransitRabbitMqIntegrationTests
             return Task.CompletedTask;
         });
 
-        await using var bus = RabbitMqBusAdapter.Create(connectionString, queueName, processor);
+        await using var bus = IntegrationBus.Create(connectionString, queueName, processor);
         var host = new MassTransitConsumerHost(bus, processor, NullLogger<MassTransitConsumerHost>.Instance);
         var publisher = new MassTransitPublisher(bus, NullLogger<MassTransitPublisher>.Instance);
 
@@ -67,13 +68,33 @@ public sealed class MassTransitRabbitMqIntegrationTests
 
             var delivered = await WaitAsync(received.Task, TimeSpan.FromSeconds(30), cancellationToken);
 
-            // Assert: the round-trip preserved every envelope field across the real transport (Req 4.4).
+            // Assert: the round-trip preserved every envelope field across the real transport
+            // (Req 6.1, 6.2, 6.3). Scalar metadata first.
             Assert.Equal(sent.MessageId, delivered.MessageId);
             Assert.Equal(sent.CorrelationId, delivered.CorrelationId);
             Assert.Equal(sent.MessageType, delivered.MessageType);
             Assert.Equal(sent.ContractVersion, delivered.ContractVersion);
+
+            // Req 6.1 — the UTC creation timestamp survives the wire verbatim. The wire contract
+            // carries CreatedAtUtc as a DateTimeOffset serialized/deserialized by MassTransit's JSON
+            // envelope, which preserves full tick precision, so exact equality is the right bar here
+            // (no sub-millisecond truncation to tolerate).
+            Assert.Equal(sent.CreatedAtUtc, delivered.CreatedAtUtc);
+
+            // Req 6.2 — the delivered header collection matches the published one exactly: same number
+            // of entries, every published key present, each mapped to a value equal to its published
+            // value. Comparing counts then every key/value pair catches both dropped and spurious keys.
+            Assert.Equal(sent.Headers.Count, delivered.Headers.Count);
+            foreach (var (key, expectedValue) in sent.Headers)
+            {
+                Assert.True(
+                    delivered.Headers.TryGetValue(key, out var deliveredValue),
+                    $"Delivered envelope is missing the published header '{key}'.");
+                Assert.Equal(expectedValue, deliveredValue);
+            }
+
+            // Req 6.3 — payload bytes equal in length and in every byte position.
             Assert.Equal(payload, delivered.Payload.ToArray());
-            Assert.Equal(sent.Headers["tenant"], delivered.Headers["tenant"]);
         }
         finally
         {
@@ -142,7 +163,7 @@ public sealed class MassTransitRabbitMqIntegrationTests
             }
         });
 
-        await using var bus = RabbitMqBusAdapter.Create(connectionString, queueName, processor);
+        await using var bus = IntegrationBus.Create(connectionString, queueName, processor);
         var host = new MassTransitConsumerHost(bus, processor, NullLogger<MassTransitConsumerHost>.Instance);
         var publisher = new MassTransitPublisher(bus, NullLogger<MassTransitPublisher>.Instance);
 
@@ -155,29 +176,42 @@ public sealed class MassTransitRabbitMqIntegrationTests
             // Act: wait for the message to be dead-lettered.
             await WaitAsync(deadLetterSink.FirstCapture, TimeSpan.FromSeconds(30), cancellationToken);
 
-            // Assert 1 — the message was dead-lettered, preserving its context (Req 8.1, 8.2).
+            // Assert 1 — the poison message was routed to the dead-letter sink, preserving its context:
+            // message id, correlation id, attempt count, and payload bytes (Req 11.5 routing; Req 8.5).
             var captured = Assert.Single(deadLetterSink.Captured);
             Assert.Equal(sent.MessageId, captured.Message.Envelope.MessageId);
             Assert.Equal(correlationId, captured.Message.CorrelationId);
             Assert.Equal(policy.MaxAttempts, captured.Message.AttemptCount);
             Assert.Equal(payload, captured.Message.Envelope.Payload.ToArray());
 
-            // Assert 2 — routing happened within 5s of the final failed attempt (Req 8.1).
+            // Assert 2 — routing happened within 5s of the final failed attempt (Req 8.4).
             var sinceFinalFailure = captured.AtUtc - lastFailedAttemptAtUtc;
             Assert.True(
                 sinceFinalFailure >= TimeSpan.Zero && sinceFinalFailure <= TimeSpan.FromSeconds(5),
                 $"Expected dead-letter within 5s of the final failed attempt but it took {sinceFinalFailure}.");
 
             // Assert 3 — the handler ran exactly MaxAttempts times: the bounded policy terminated and
-            // the message was not reprocessed after dead-lettering (Req 6.5).
+            // the poison message was not redelivered to the application handler after dead-lettering
+            // (Req 11.5 — not redelivered to the handler).
             Assert.Equal(policy.MaxAttempts, Volatile.Read(ref handlerInvocations));
 
             // Assert 4 — the message left the active pipeline: give the broker a moment to settle, then
-            // confirm no redelivery occurred (handler count unchanged). A dead-lettered-and-acknowledged
-            // message is removed from active processing (Req 8.1).
+            // confirm no redelivery occurred (handler count unchanged) and the sink captured it exactly
+            // once. A dead-lettered-and-acknowledged message is removed from active processing (Req 8.6).
             await Task.Delay(TimeSpan.FromSeconds(3), cancellationToken);
             Assert.Equal(policy.MaxAttempts, Volatile.Read(ref handlerInvocations));
             Assert.Single(deadLetterSink.Captured);
+
+            // Assert 5 — the poison message is not reported in-flight on the real broker (Req 11.5).
+            // After the dead-letter-and-acknowledge the receive queue has drained: the broker reports
+            // zero messages in the ready state, so nothing is sitting in the queue awaiting redelivery.
+            // Combined with Assert 3/4 (the handler is never re-invoked), this proves the message is
+            // neither queued nor being reprocessed — it has left the active processing pipeline.
+            var readyMessages = await BrokerQueueInspector.GetReadyMessageCountAsync(
+                connectionString,
+                queueName,
+                cancellationToken);
+            Assert.Equal(0u, readyMessages);
         }
         finally
         {

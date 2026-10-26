@@ -316,7 +316,7 @@ Language: **C#/.NET** (as specified throughout the design).
 - [x] 19. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [~] 20. Implement adapter package shells behind the ports (Infrastructure)
+- [ ] 20. Implement adapter package shells behind the ports (Infrastructure)
   - [x] 20.1 Implement the MassTransit adapter shell (Pub/Sub + Queue)
     - Implement `IMessagingProvider` wrapping a configured MassTransit bus; publisher delegates to
       publish/send endpoints; consumer host wraps bus start/stop; declare `RequiredSettings` and
