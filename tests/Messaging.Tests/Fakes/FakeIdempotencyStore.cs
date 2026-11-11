@@ -33,8 +33,14 @@ internal sealed class FakeIdempotencyStore : IIdempotencyStore
         return Task.FromResult(_processedKeys.Contains(idempotencyKey));
     }
 
+    /// <summary>Keys handed to <see cref="RecordProcessedAsync"/>, in order.</summary>
+    public IReadOnlyList<string> Writes => _writes;
+
+    private readonly List<string> _writes = new();
+
     public Task RecordProcessedAsync(string idempotencyKey, TimeSpan retention, CancellationToken cancellationToken)
     {
+        _writes.Add(idempotencyKey);
         _processedKeys.Add(idempotencyKey);
         return Task.CompletedTask;
     }

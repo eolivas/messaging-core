@@ -161,6 +161,31 @@ public class CoreConsumeProcessorTests
         Assert.Equal(0, store.RecordProcessedCount);
     }
 
+    [Fact]
+    public async Task ProcessAsync_MissingIdempotencyKey_WithMaxAttempts3_DeadLettersWithAttemptCountOne()
+    {
+        // Arrange: missing key is non-transient, so even with MaxAttempts = 3 it must not be retried.
+        var handler = new RecordingHandlerInvoker();
+        var sink = new CapturingDeadLetterSink();
+        var store = new StubIdempotencyStore(alreadyProcessed: false);
+        IdempotencyGate gate = EnabledGate(
+            keyProvider: new UnderivableKeyProvider(),
+            store: store);
+
+        CoreConsumeProcessor processor = Build(
+            handlerInvoker: handler,
+            deadLetterSink: sink,
+            idempotencyGate: gate,
+            maxAttempts: 3);
+
+        // Act
+        await processor.ProcessAsync(Envelope(), CancellationToken.None);
+
+        // Assert: dead-lettered on the first attempt (Req 2.4).
+        DeadLetterMessage deadLetter = Assert.Single(sink.Captured);
+        Assert.Equal(1, deadLetter.AttemptCount);
+    }
+
     // ----- Req 9.2: observability hook carries the correlation id -----------------------------
 
     [Fact]
@@ -215,7 +240,8 @@ public class CoreConsumeProcessorTests
         IHandlerInvoker? handlerInvoker = null,
         IDeadLetterSink? deadLetterSink = null,
         IdempotencyGate? idempotencyGate = null,
-        IMessagingLog? messagingLog = null)
+        IMessagingLog? messagingLog = null,
+        int maxAttempts = 1)
     {
         var observability = new ObservabilityContext(
             messagingLog ?? new NoOpMessagingLog(),
@@ -223,7 +249,7 @@ public class CoreConsumeProcessorTests
             new MessagingTraceSource(tracingEnabled: false),
             new PayloadRedactor());
 
-        var retryPolicy = new RetryPolicyConfig { MaxAttempts = 1 };
+        var retryPolicy = new RetryPolicyConfig { MaxAttempts = maxAttempts };
 
         var deadLetterRouter = new DeadLetterRouter(
             deadLetterSink ?? new CapturingDeadLetterSink(),
