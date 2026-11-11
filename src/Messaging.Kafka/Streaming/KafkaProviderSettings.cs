@@ -25,6 +25,25 @@ public sealed record KafkaProviderSettings
     /// <summary>The configuration key for the topic the adapter produces to and consumes from.</summary>
     public const string TopicSettingName = "Kafka:Topic";
 
+    /// <summary>The configuration key for the wire security protocol (optional).</summary>
+    public const string SecurityProtocolSettingName = "Kafka:SecurityProtocol";
+
+    /// <summary>The configuration key for the SASL mechanism (optional).</summary>
+    public const string SaslMechanismSettingName = "Kafka:SaslMechanism";
+
+    /// <summary>The configuration key for the SASL username (optional, secret).</summary>
+    public const string SaslUsernameSettingName = "Kafka:SaslUsername";
+
+    /// <summary>The configuration key for the SASL password (optional, secret).</summary>
+    public const string SaslPasswordSettingName = "Kafka:SaslPassword";
+
+    /// <summary>The configuration key for the broker CA certificate path (optional).</summary>
+    public const string TlsCaLocationSettingName = "Kafka:TlsCaLocation";
+
+    private const string PermittedSecurityProtocols = "Plaintext, Ssl, SaslPlaintext, SaslSsl";
+
+    private const string PermittedSaslMechanisms = "None, Plain, ScramSha256, ScramSha512";
+
     /// <summary>The bootstrap servers list (host:port[,host:port...]) the client connects to.</summary>
     public required string BootstrapServers { get; init; }
 
@@ -48,7 +67,68 @@ public sealed record KafkaProviderSettings
         new ProviderSettingDescriptor(BootstrapServersSettingName, Required: true, PermittedValuesOrRange: "host:port[,host:port...]"),
         new ProviderSettingDescriptor(ConsumerGroupIdSettingName, Required: true, PermittedValuesOrRange: null),
         new ProviderSettingDescriptor(TopicSettingName, Required: true, PermittedValuesOrRange: null),
+
+        // Optional security settings (Req 3.x, 12.1-12.6). Absent means Plaintext / no SASL / host trust store.
+        new ProviderSettingDescriptor(SecurityProtocolSettingName, Required: false, PermittedValuesOrRange: PermittedSecurityProtocols),
+        new ProviderSettingDescriptor(SaslMechanismSettingName, Required: false, PermittedValuesOrRange: PermittedSaslMechanisms),
+        new ProviderSettingDescriptor(SaslUsernameSettingName, Required: false, PermittedValuesOrRange: null),
+        new ProviderSettingDescriptor(SaslPasswordSettingName, Required: false, PermittedValuesOrRange: null),
+        new ProviderSettingDescriptor(TlsCaLocationSettingName, Required: false, PermittedValuesOrRange: null),
     };
+
+    /// <summary>
+    /// Evaluates the SASL cross-field rule against a provider-settings bag (Req 12.4-12.6): when the
+    /// security protocol is <c>SaslPlaintext</c> or <c>SaslSsl</c>, a mechanism other than <c>None</c>,
+    /// a username and a password are all required. Emits one error per absent setting, identified by
+    /// setting name only; no setting value (credential or otherwise) is ever placed in an error.
+    /// Value-set checks for each individual setting remain the validator's job via <see cref="Describe"/>;
+    /// an unrecognized protocol is therefore not treated as SASL here.
+    /// </summary>
+    /// <param name="providerSettings">The configured provider settings bag.</param>
+    /// <returns>Zero or more errors; empty when the rule is satisfied or no SASL protocol is selected.</returns>
+    public static IReadOnlyList<ConfigurationError> ValidateSecurity(IReadOnlyDictionary<string, string?> providerSettings)
+    {
+        ArgumentNullException.ThrowIfNull(providerSettings);
+
+        providerSettings.TryGetValue(SecurityProtocolSettingName, out var protocol);
+        var isSasl = string.Equals(protocol, nameof(KafkaSecurityProtocol.SaslPlaintext), StringComparison.Ordinal)
+            || string.Equals(protocol, nameof(KafkaSecurityProtocol.SaslSsl), StringComparison.Ordinal);
+        if (!isSasl)
+        {
+            return Array.Empty<ConfigurationError>();
+        }
+
+        var errors = new List<ConfigurationError>();
+
+        providerSettings.TryGetValue(SaslMechanismSettingName, out var mechanism);
+        if (string.IsNullOrWhiteSpace(mechanism)
+            || string.Equals(mechanism, nameof(KafkaSaslMechanism.None), StringComparison.Ordinal))
+        {
+            errors.Add(new ConfigurationError(
+                SaslMechanismSettingName,
+                "A SASL mechanism other than None is required when the security protocol is a SASL protocol.",
+                PermittedSaslMechanisms));
+        }
+
+        AddIfAbsent(providerSettings, SaslUsernameSettingName, errors);
+        AddIfAbsent(providerSettings, SaslPasswordSettingName, errors);
+
+        return errors;
+    }
+
+    private static void AddIfAbsent(
+        IReadOnlyDictionary<string, string?> providerSettings,
+        string settingName,
+        List<ConfigurationError> errors)
+    {
+        if (!providerSettings.TryGetValue(settingName, out var value) || string.IsNullOrWhiteSpace(value))
+        {
+            errors.Add(new ConfigurationError(
+                settingName,
+                "Setting is required when the security protocol is a SASL protocol.",
+                null));
+        }
+    }
 
     /// <summary>
     /// Validates the shell's own invariants fail-fast (Req 2.5): the three required values must be
