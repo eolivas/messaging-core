@@ -1,0 +1,41 @@
+# Local development infrastructure for the Kafka provider (Streaming mode).
+# Compose runs the broker; the service runs on the host and connects to it via
+# Kafka:BootstrapServers = localhost:9092 (no code change needed).
+#
+# Start:  docker compose up -d --wait
+# Stop:   docker compose down
+#
+# Local-only throwaway broker: PLAINTEXT, no credentials, no TLS material, no secrets.
+services:
+  kafka:
+    # Pinned release tag, identical to KafkaContainerFixture. Never use "latest".
+    image: confluentinc/cp-kafka:7.6.1
+    container_name: messaging-core-kafka
+    ports:
+      - "9092:9092"
+    environment:
+      # Single-node KRaft (no ZooKeeper): this node is both broker and controller.
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:29093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      # Public (non-secret) KRaft cluster identifier for this disposable local broker.
+      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+      # PLAINTEXT_HOST is reachable from the host; PLAINTEXT is for in-container/internal use.
+      KAFKA_LISTENERS: PLAINTEXT://kafka:29092,CONTROLLER://kafka:29093,PLAINTEXT_HOST://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      # Single-node replication settings.
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-broker-api-versions --bootstrap-server kafka:29092 > /dev/null 2>&1"]
+      interval: 5s
+      timeout: 10s
+      retries: 6
+      start_period: 20s
+    restart: "no"

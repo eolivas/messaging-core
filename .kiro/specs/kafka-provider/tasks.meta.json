@@ -1,0 +1,668 @@
+{
+  "pbtResults": {
+    "2.2 Write property test for wire-format round-trip identity": {
+      "status": "passed",
+      "lastRunTimestamp": 1794347835318
+    },
+    "1.5 Write property test for startup validation aggregation": {
+      "status": "passed",
+      "lastRunTimestamp": 1794348637766
+    },
+    "2.3 Write property test for missing-header rejection": {
+      "status": "passed",
+      "lastRunTimestamp": 1794347901587
+    },
+    "6.2 Write property test for commit-versus-retain mapping": {
+      "status": "passed",
+      "lastRunTimestamp": 1794348340671
+    },
+    "6.3 Write property test for bounded attempt count by failure kind": {
+      "status": "passed",
+      "lastRunTimestamp": 1794348619442
+    },
+    "6.4 Write property test for dead-letter context preservation": {
+      "status": "passed",
+      "lastRunTimestamp": 1794348946820
+    }
+  },
+  "executionHistory": {
+    "1.1 Pin `Microsoft.Extensions.Hosting.Abstractions` in the adapter project": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346766674
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346784339
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346945910
+      }
+    ],
+    "1.2 Add `KafkaSecuritySettings` and its selector enums": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346767246
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346785170
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346947374
+      }
+    ],
+    "1.3 Add `RetainOffsetException` and `MissingRequiredHeaderException`": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346768653
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346785871
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346948871
+      }
+    ],
+    "1.4 Extend `KafkaProviderSettings.Describe()` with security descriptors and SASL cross-field validation": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346769180
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346952904
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347144203
+      }
+    ],
+    "1.5 Write property test for startup validation aggregation": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346769501
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347434158
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794348657140
+      }
+    ],
+    "1.6 Write unit tests for settings validation": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346770152
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347435153
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347944337
+      }
+    ],
+    "2.1 Move and harden `KafkaWireFormat`": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346770392
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346955458
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347141898
+      }
+    ],
+    "2.2 Write property test for wire-format round-trip identity": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346770608
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347436374
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347945059
+      }
+    ],
+    "2.3 Write property test for missing-header rejection": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346771313
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347437373
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347951612
+      }
+    ],
+    "3.1 Create the factory": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346771555
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346956491
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347143432
+      }
+    ],
+    "3.2 Write unit tests for the config factory": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346772087
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347438374
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347945646
+      }
+    ],
+    "4.1 Move and harden `ConfluentKafkaProducer : IKafkaProducer, IDisposable`": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346772460
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347148813
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347425874
+      }
+    ],
+    "4.2 Move and harden `ConfluentKafkaConsumer : IKafkaConsumer, IDisposable`": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346772808
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347149842
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347424146
+      }
+    ],
+    "5. Checkpoint - wire format, config, and client adapters": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346773139
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794354275888
+      }
+    ],
+    "6.1 Implement `KafkaStreamMessageProcessor : IStreamMessageProcessor`": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346773378
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347150411
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347426576
+      }
+    ],
+    "6.2 Write property test for commit-versus-retain mapping": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346773625
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794348157968
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794348658580
+      }
+    ],
+    "6.3 Write property test for bounded attempt count by failure kind": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346773938
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794348160160
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794348658985
+      }
+    ],
+    "6.4 Write property test for dead-letter context preservation": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346774337
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794348671899
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794352290961
+      }
+    ],
+    "6.5 Write unit tests for processor flows": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346774627
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794348673102
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794352292779
+      }
+    ],
+    "7.1 Implement the bounded probe": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346774959
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347156509
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347422052
+      }
+    ],
+    "7.2 Write unit tests for probe mapping": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346775453
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794348162197
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794348660660
+      }
+    ],
+    "8.1 Implement the hosted consume loop": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346775663
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346957862
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347142920
+      }
+    ],
+    "8.2 Write unit tests for the hosted service and host behavior": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346775937
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794348673680
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794352293719
+      }
+    ],
+    "9. Checkpoint - seams and hosted service": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346776241
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794354285039
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794354515947
+      }
+    ],
+    "10.1 Extend `AddKafkaMessagingProvider`": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346776553
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794348159027
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794348657938
+      }
+    ],
+    "10.2 Write unit tests for DI composition": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346776849
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794352304937
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794353558693
+      }
+    ],
+    "10.3 Write property test for no secret or payload in diagnostics": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346777155
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794352306262
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794353554800
+      }
+    ],
+    "11.1 Create `docker-compose.yml` at the repo root": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346777433
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347151119
+      },
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347423250
+      }
+    ],
+    "11.2 Write file-content tests for the compose file": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346777667
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794348162909
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794348661573
+      }
+    ],
+    "12.1 Re-point the test-local adapters at the promoted production types": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346777928
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794348674700
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794352294845
+      }
+    ],
+    "12.2 Verify at-least-once redelivery over the real broker": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346778474
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794352308078
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794353560265
+      }
+    ],
+    "12.3 Verify correlation-id propagation over the real broker": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346778778
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794352309616
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794354273375
+      }
+    ],
+    "12.4 Verify the success-path commit is not redelivered": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346779059
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794352310704
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794354277516
+      }
+    ],
+    "13. Final checkpoint - full suite": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794346779411
+      },
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794354520985
+      }
+    ],
+    "4. Promote the producer and consumer adapters": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347427045
+      }
+    ],
+    "3. Implement `KafkaClientConfigFactory` (pure config and security)": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347948069
+      }
+    ],
+    "2. Promote `KafkaWireFormat` into the Infrastructure package": [
+      {
+        "executionId": "146e6c0f-3ca2-4775-a861-f8369e3d49b3",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794347952368
+      }
+    ],
+    "1. Add the hosting package, security data models, exceptions, and settings validation": [
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794348659808
+      }
+    ],
+    "7. Implement `ConfluentKafkaTransportProbe` (the reachability seam)": [
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794348662105
+      }
+    ],
+    "11. Add local docker-compose Kafka infrastructure": [
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794348662627
+      }
+    ],
+    "8. Implement `KafkaConsumerHostedService` (the hosting gap)": [
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794352296013
+      }
+    ],
+    "12. Re-point and complete containerized integration verification": [
+      {
+        "executionId": "d5abe755-842c-4a81-80aa-f9af1024af9f",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794354278764
+      }
+    ],
+    "6. Implement `KafkaStreamMessageProcessor` (the consume seam)": [
+      {
+        "executionId": "2900a078-bfcc-4207-935e-1a816b5b4633",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794356788841
+      }
+    ],
+    "10. Extend DI wiring to register the production seams": [
+      {
+        "executionId": "2900a078-bfcc-4207-935e-1a816b5b4633",
+        "chatSessionId": "sess_128712bc-39fd-4b3f-81c1-360556f5bc7e",
+        "timestamp": 1794356789876
+      }
+    ]
+  }
+}

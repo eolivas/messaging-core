@@ -5,11 +5,15 @@ surface — reliable publishing, idempotent consumption, retries with backoff, d
 graceful shutdown, and observability — and keeps the concrete transport (RabbitMQ, Kafka, batch)
 behind swappable provider adapters.
 
-> **Status: core complete; RabbitMQ transport live, other adapters pending.** The messaging
-> engine, resilience, and persistence logic are implemented and tested. The RabbitMQ provider (via
-> MassTransit) is now implemented and verified against a real broker in containers, so the library
-> can publish to and consume from RabbitMQ end-to-end. The Kafka and Batch adapters and some host
-> wiring remain intentionally deferred to follow-up specs (see [Current status](#current-status)).
+> **Status: core complete; RabbitMQ and Kafka transports live, Batch adapter pending.**
+> The messaging engine, resilience, and persistence logic are
+> implemented and tested. The RabbitMQ provider (via MassTransit)
+> and the Kafka provider (native Confluent.Kafka client) are
+> implemented and verified against real brokers in containers, so
+> the library can publish to and consume from either end-to-end.
+> The Batch adapter and some host wiring remain intentionally
+> deferred to follow-up specs
+> (see [Current status](#current-status)).
 
 ## Highlights
 
@@ -47,13 +51,15 @@ behind swappable provider adapters.
 | `Messaging` | Application | Publish/consume pipelines, resilience, observability, configuration, lifecycle, and DI registration. |
 | `Messaging.Persistence` | Infrastructure | EF Core outbox recorder/dispatcher and idempotency store (PostgreSQL). |
 | `Messaging.MassTransit` | Infrastructure | MassTransit provider adapter for broker-shaped modes. **RabbitMQ transport implemented** (bus adapter + consume processor), verified against a real broker. |
-| `Messaging.Kafka` | Infrastructure | Kafka streaming provider adapter. *Shell.* |
+| `Messaging.Kafka` | Infrastructure | Kafka streaming provider adapter over the native `Confluent.Kafka` client. **Implemented**, verified against a real broker. |
 | `Messaging.Batch` | Infrastructure | Scheduled/triggered batch provider adapter. *Shell.* |
 
 ## Requirements
 
 - .NET 8 SDK
 - PostgreSQL (only when using the `Messaging.Persistence` outbox/idempotency stores)
+- Docker (integration tests start RabbitMQ, Kafka, and PostgreSQL containers via Testcontainers;
+  `docker compose up -d --wait` starts a local Kafka broker on `localhost:9092`)
 
 Nullable reference types and implicit usings are enabled across the solution, and package versions
 are pinned to exact patches.
@@ -77,6 +83,13 @@ Implemented and ready:
 - Startup configuration validation and provider resolution.
 - **RabbitMQ transport (via MassTransit).** The `Messaging.MassTransit` shell is now a live
   RabbitMQ provider — see highlights below.
+- **Kafka transport (native Confluent.Kafka).** The
+  `Messaging.Kafka` shell is now a live Streaming provider —
+  see [Kafka provider highlights](#kafka-provider-highlights).
+- **Missing idempotency key fix.** A message whose idempotency
+  key cannot be derived is now dead-lettered on the first
+  attempt instead of being retried — see
+  [Bugfix: missing idempotency key classification](#bugfix-missing-idempotency-key-classification).
 
 ### RabbitMQ provider highlights
 
@@ -107,11 +120,90 @@ transport-neutral and selects the provider at startup.
   (pinned image tag) covering a publish-then-consume round trip and retry-exhaustion
   dead-lettering, alongside property tests for the invariants above.
 
+### Kafka provider highlights
+
+Delivered by the `kafka-provider` spec. Unlike RabbitMQ, Kafka is
+reached through the **native `Confluent.Kafka` client**, not the
+MassTransit Kafka Rider. Streaming's defining concern is explicit
+consumer-group membership and manual offset-commit control, which
+the Rider abstracts away. The core stays transport-neutral.
+
+- **Live seams filled in.** Production implementations of the
+  producer (`IKafkaProducer`, `Acks.All` with idempotence enabled),
+  the consumer (`IKafkaConsumer`, auto-commit disabled, commits the
+  exact offset processed), the stream message processor
+  (`IStreamMessageProcessor`), and the reachability probe
+  (`IKafkaTransportProbe`, a bounded admin-client metadata call).
+- **Hosted consume loop.** `KafkaConsumerHostedService` pumps the
+  consume, process, commit iteration while the host is running,
+  drains gracefully on shutdown, and keeps going after a per-record
+  failure.
+- **Commit after process.** An offset is committed only after the
+  core pipeline returns. Success or a routed dead-letter commits. A
+  dead-letter that could not be routed throws
+  `RetainOffsetException`, so the offset is not committed and the
+  record is redelivered (at-least-once).
+- **Core resilience applied once.** As with RabbitMQ, the core
+  pipeline owns idempotency, contract binding, classification,
+  bounded retry with backoff, and dead-lettering. No client-side
+  redelivery policy is layered on top.
+- **Envelope fidelity.** Message id, correlation id, type,
+  timestamp, contract version, user headers, and payload bytes
+  round-trip through Kafka record headers and value
+  (`KafkaWireFormat`).
+- **Config and security.** `KafkaClientConfigFactory` builds
+  producer, consumer, and admin configs from
+  `Kafka:BootstrapServers`, `Kafka:ConsumerGroupId`, and
+  `Kafka:Topic`, plus optional security protocol, SASL mechanism,
+  injected credentials, and TLS CA location. Secrets are injected
+  and never logged.
+- **No topic auto-administration.** Topic creation stays out of the
+  production path, in line with the no-auto-migration rule. The
+  admin client is used only for the read-only reachability probe.
+- **Verified against a real broker.** Integration tests run against
+  a containerized Kafka (`confluentinc/cp-kafka:7.6.1`, pinned)
+  covering at-least-once redelivery with manual offset commit.
+  `docker-compose.yml` provides the same image for local
+  development.
+
+### Bugfix: missing idempotency key classification
+
+Delivered by the `missing-idempotency-key-classification-fix` spec.
+
+- **Defect.** With idempotent consumption enabled, an envelope whose
+  key cannot be derived (for example `MessageId == Guid.Empty`) made
+  `IdempotencyGate` throw `MissingIdempotencyKeyException`. That type
+  derived from plain `Exception`, so `FailureClassifier` fell through
+  to its `Transient` default and retried the message up to
+  `MaxAttempts` before dead-lettering it (`AttemptCount == 3` with
+  `MaxAttempts = 3`). The handler never ran, but attempts and backoff
+  were wasted and the commit or acknowledgement was delayed. The
+  defect sat in the shared pipeline, so it affected both the Kafka
+  and MassTransit consume paths.
+- **Fix.** `MissingIdempotencyKeyException` now derives from
+  `MessagingFailureException` and reports `FailureKind.NonTransient`.
+  `FailureClassifier` logic is unchanged; its existing
+  `MessagingFailureException` rule picks up the declared kind. The
+  type, `MessageType` diagnostic, and payload-free message text are
+  preserved, so existing callers are unaffected.
+- **Result.** An underivable key is dead-lettered on the first
+  attempt (`AttemptCount == 1`) for any `MaxAttempts`, with no
+  handler invocation and no idempotency store lookups or writes.
+  Transient failures still retry up to `MaxAttempts`, other failure
+  kinds keep their classification, and unrecognized exceptions
+  still default to `Transient`.
+- **Tests.** A property test across arbitrary `MaxAttempts`,
+  classifier unit tests, a MassTransit processor test, the
+  previously skipped Kafka test
+  `ProcessAsync_MissingIdempotencyKey_IsNotRetried`, and
+  preservation property tests for the unchanged behavior.
+
 Intentionally deferred to follow-up specs (a consuming service must supply these before going
 live end-to-end):
 
-- **Remaining transport adapters.** The Kafka and Batch providers are still shells; their
-  bus/consume seams are not yet implemented, so those transports do not publish or consume yet.
+- **Batch transport adapter.** The Batch provider is still a shell;
+  its bus/consume seams are not yet implemented, so that transport
+  does not publish or consume yet.
 - **Outbox dispatch scheduler.** The dispatcher runs one pass per call; no background service
   drives it on an interval yet, so recorded outbox entries are not published automatically.
 - **Observability backend wiring.** The host must register an exporter (e.g. OpenTelemetry) for
@@ -120,7 +212,7 @@ live end-to-end):
 ## Architecture notes
 
 - The core provides a uniform retry/backoff configuration surface rather than a bespoke engine, and
-  it is the single source of retry behavior: for the RabbitMQ provider the core pipeline owns
+  it is the single source of retry behavior: for the RabbitMQ and Kafka providers the core pipeline owns
   retry, backoff, and dead-lettering, and a transport-level redelivery policy is deliberately not
   layered on top so attempt counts stay bounded. The consumer pulls in-process at its own pace, so
   backpressure is natural and no circuit breaker is needed on the consume path.

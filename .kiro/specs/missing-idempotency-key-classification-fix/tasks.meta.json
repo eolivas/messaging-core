@@ -1,0 +1,137 @@
+{
+  "pbtResults": {
+    "1. Write bug condition exploration tests": {
+      "status": "passed",
+      "failingExample": "MissingIdempotencyKeyNonTransientPropertyTests: reason=empty-message-id, maxAttempts=5 => outcome=DeadLetteredExhausted, resultAttempts=5, deadLetters=1, handlerInvocations=0, lookups=0, writes=0 (falsified after 1 test)",
+      "lastRunTimestamp": 1794385448264
+    }
+  },
+  "executionHistory": {
+    "1. Write bug condition exploration tests": [
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385172473
+      },
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385186724
+      },
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385461083
+      }
+    ],
+    "2. Write preservation property tests (BEFORE implementing fix)": [
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385173726
+      },
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385464789
+      },
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385604173
+      }
+    ],
+    "3.1 Implement the fix": [
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385174901
+      },
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385610202
+      },
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385705981
+      }
+    ],
+    "3.2 Verify bug condition exploration tests now pass": [
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385175713
+      },
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385713777
+      },
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385793943
+      }
+    ],
+    "3.3 Verify preservation tests still pass": [
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385176324
+      },
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385797867
+      },
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385869185
+      }
+    ],
+    "4. Add unit tests for the fixed exception and the MassTransit path": [
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385178093
+      },
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385874092
+      },
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385944777
+      }
+    ],
+    "5. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385179224
+      },
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385946044
+      },
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794386362848
+      }
+    ],
+    "3. Fix for missing idempotency key being classified as transient": [
+      {
+        "executionId": "1520855a-7a12-4e4f-a892-86da2986309f",
+        "chatSessionId": "sess_65c0a35d-3643-4283-b8fa-08f42c1a6eb7",
+        "timestamp": 1794385869839
+      }
+    ]
+  }
+}

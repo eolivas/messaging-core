@@ -28,6 +28,7 @@ namespace Messaging.Resilience;
 ///   <item><description><see cref="MalformedPayloadException"/>.</description></item>
 ///   <item><description><see cref="InvalidEnvelopeException"/> — a malformed envelope (Req 3.2, 4.3).</description></item>
 ///   <item><description><see cref="UnknownContractException"/> — an unbindable/poison payload (Req 4.6, 8.3).</description></item>
+///   <item><description><see cref="MissingIdempotencyKeyException"/> — no derivable idempotency key; retrying cannot succeed (Req 7.6).</description></item>
 /// </list>
 /// <para>
 /// Any <see cref="MessagingFailureException"/> carries its own <see cref="MessagingFailureException.Kind"/>,

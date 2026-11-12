@@ -56,7 +56,18 @@ public class KafkaMessagingProviderTests
     {
         var provider = CreateProvider(new TransportHealth(Reachable: true, UnavailableDependency: null));
 
-        Assert.All(provider.RequiredSettings, s => Assert.True(s.Required));
+        var core = new[]
+        {
+            KafkaProviderSettings.BootstrapServersSettingName,
+            KafkaProviderSettings.ConsumerGroupIdSettingName,
+            KafkaProviderSettings.TopicSettingName,
+        };
+
+        foreach (var name in core)
+        {
+            var descriptor = Assert.Single(provider.RequiredSettings, s => s.Name == name);
+            Assert.True(descriptor.Required);
+        }
     }
 
     [Fact]

@@ -14,8 +14,14 @@ namespace Messaging.Consuming;
 /// This is distinct from <see cref="UnknownContractException"/> (an unbindable payload): it signals
 /// specifically that the message lacks the stable identity needed to deduplicate it. The exception
 /// carries the offending <see cref="MessageType"/> for diagnostics without leaking payload content.
+/// <para>
+/// Derives from <see cref="MessagingFailureException"/> with <see cref="FailureKind.NonTransient"/>:
+/// the same envelope can never yield a key on retry, so <c>FailureClassifier</c> routes it to
+/// dead-letter with zero retries via its existing <c>MessagingFailureException</c> rule. The message
+/// names only the message type, never payload content.
+/// </para>
 /// </remarks>
-public sealed class MissingIdempotencyKeyException : Exception
+public sealed class MissingIdempotencyKeyException : MessagingFailureException
 {
     /// <summary>The message type of the envelope whose idempotency key could not be derived, for diagnostics.</summary>
     public string MessageType { get; }
@@ -30,4 +36,7 @@ public sealed class MissingIdempotencyKeyException : Exception
     {
         MessageType = messageType;
     }
+
+    /// <inheritdoc />
+    public override FailureKind Kind => FailureKind.NonTransient;
 }
