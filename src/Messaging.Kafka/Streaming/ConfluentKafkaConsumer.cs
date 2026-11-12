@@ -26,6 +26,7 @@ public sealed class ConfluentKafkaConsumer : IKafkaConsumer, IDisposable
     private readonly IConsumer<Ignore, byte[]> _consumer;
     private readonly TimeSpan _pollTimeout;
     private readonly ILogger<ConfluentKafkaConsumer> _logger;
+    private int _disposed;
 
     // Reference-keyed: the same KafkaConsumeResult instance handed to the host is the commit handle.
     private readonly ConcurrentDictionary<KafkaConsumeResult, ConsumeResult<Ignore, byte[]>> _inFlight =
@@ -59,6 +60,7 @@ public sealed class ConfluentKafkaConsumer : IKafkaConsumer, IDisposable
     /// <inheritdoc />
     public void Subscribe(string topic)
     {
+        ThrowIfDisposed();
         ArgumentException.ThrowIfNullOrWhiteSpace(topic);
         _consumer.Subscribe(topic);
     }
@@ -66,6 +68,7 @@ public sealed class ConfluentKafkaConsumer : IKafkaConsumer, IDisposable
     /// <inheritdoc />
     public Task<KafkaConsumeResult?> ConsumeAsync(CancellationToken cancellationToken)
     {
+        ThrowIfDisposed();
         cancellationToken.ThrowIfCancellationRequested();
         var consumeResult = _consumer.Consume(_pollTimeout);
         cancellationToken.ThrowIfCancellationRequested();
@@ -88,6 +91,7 @@ public sealed class ConfluentKafkaConsumer : IKafkaConsumer, IDisposable
     /// <inheritdoc />
     public Task CommitAsync(KafkaConsumeResult result, CancellationToken cancellationToken)
     {
+        ThrowIfDisposed();
         ArgumentNullException.ThrowIfNull(result);
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -115,8 +119,26 @@ public sealed class ConfluentKafkaConsumer : IKafkaConsumer, IDisposable
     }
 
     /// <inheritdoc />
-    public void Close() => _consumer.Close();
+    public void Close()
+    {
+        ThrowIfDisposed();
+        _consumer.Close();
+    }
 
-    /// <summary>Releases the underlying consumer.</summary>
-    public void Dispose() => _consumer.Dispose();
+    /// <summary>
+    /// Releases the underlying consumer. Idempotent: only the first call disposes the native
+    /// consumer, so the container and a caller may both dispose it safely.
+    /// </summary>
+    public void Dispose()
+    {
+        if (Interlocked.Exchange(ref _disposed, 1) != 0)
+        {
+            return;
+        }
+
+        _consumer.Dispose();
+    }
+
+    private void ThrowIfDisposed() =>
+        ObjectDisposedException.ThrowIf(Volatile.Read(ref _disposed) != 0, this);
 }
