@@ -39,6 +39,27 @@ public sealed class DockerComposeFileTests
             .ToList();
     }
 
+    /// <summary>The active lines of the <c>kafka</c> service block only (other services are ignored).</summary>
+    private static List<string> ReadKafkaServiceLines()
+    {
+        var lines = ReadActiveLines();
+        var start = lines.FindIndex(l => l == "  kafka:");
+        Assert.True(start >= 0, "docker-compose.yml must declare a 'kafka' service.");
+
+        var block = new List<string>();
+        for (var i = start + 1; i < lines.Count; i++)
+        {
+            if (Regex.IsMatch(lines[i], @"^  [A-Za-z0-9_-]+:\s*$"))
+            {
+                break;
+            }
+
+            block.Add(lines[i]);
+        }
+
+        return block;
+    }
+
     private static string ReadFixtureImage()
     {
         var source = File.ReadAllText(
@@ -51,7 +72,7 @@ public sealed class DockerComposeFileTests
     [Fact]
     public void ComposeImage_Parsed_EqualsFixtureImage()
     {
-        var lines = ReadActiveLines();
+        var lines = ReadKafkaServiceLines();
 
         var images = lines
             .Select(l => Regex.Match(l, @"^\s*image:\s*(\S+)\s*$"))
@@ -73,14 +94,12 @@ public sealed class DockerComposeFileTests
     }
 
     [Fact]
-    public void ComposeFile_Parsed_DeclaresSingleKafkaServiceWithHealthcheck()
+    public void ComposeFile_Parsed_DeclaresKafkaServiceWithHealthcheck()
     {
-        var lines = ReadActiveLines();
+        var allLines = ReadActiveLines();
+        var lines = ReadKafkaServiceLines();
 
-        var services = lines.Where(l => Regex.IsMatch(l, @"^  [A-Za-z0-9_-]+:\s*$")).ToList();
-
-        Assert.Single(services);
-        Assert.Equal("  kafka:", services[0]);
+        Assert.Single(allLines, l => l == "  kafka:");
         Assert.Contains(lines, l => Regex.IsMatch(l, @"^    healthcheck:\s*$"));
     }
 
