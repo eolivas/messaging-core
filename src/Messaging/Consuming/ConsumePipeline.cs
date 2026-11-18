@@ -182,9 +182,10 @@ public sealed class ConsumePipeline : IMessageConsumerHost
         // side effects (Req 7.6); a known duplicate is acknowledged WITHOUT invoking the handler
         // (Req 7.2, 7.4). Running the gate first keeps the "before side effects" ordering exact.
         var context = new ConsumeContext(IdempotencyKey: null, IsDuplicate: false);
+        IdempotencyGateDecision? decision = null;
         if (_idempotencyGate is not null)
         {
-            var decision = await _idempotencyGate
+            decision = await _idempotencyGate
                 .EvaluateAsync(envelope, cancellationToken)
                 .ConfigureAwait(false);
 
@@ -207,5 +208,15 @@ public sealed class ConsumePipeline : IMessageConsumerHost
         await _handlerInvoker
             .InvokeAsync(envelope, boundMessage, context, cancellationToken)
             .ConfigureAwait(false);
+
+        // Stage 4: record the key only after the handler succeeded (Req 7.3). A handler failure
+        // throws above, so nothing is recorded; a recording failure propagates so the message is not
+        // acknowledged (Req 7.5).
+        if (_idempotencyGate is not null && decision is not null)
+        {
+            await _idempotencyGate
+                .RecordProcessedAsync(decision, cancellationToken)
+                .ConfigureAwait(false);
+        }
     }
 }

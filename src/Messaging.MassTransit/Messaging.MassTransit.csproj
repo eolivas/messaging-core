@@ -29,6 +29,9 @@
   <ItemGroup>
     <PackageReference Include="MassTransit" Version="8.5.11" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.11" />
+    <PackageReference Include="MassTransit.AmazonSQS" Version="8.5.11" />
+    <PackageReference Include="AWSSDK.SQS" Version="4.0.100.14" />
+    <PackageReference Include="AWSSDK.SimpleNotificationService" Version="4.0.100.15" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
   </ItemGroup>

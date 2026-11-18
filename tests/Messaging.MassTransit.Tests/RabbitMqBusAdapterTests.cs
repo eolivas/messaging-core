@@ -182,6 +182,8 @@ internal sealed class FakeBusControl : IBusControl, IDisposable
     private readonly Exception? _throwOnCheckHealth;
     private readonly TimeSpan _checkHealthDelay;
     private readonly BusHealthStatus _health;
+    private readonly Action? _onStart;
+    private readonly Func<CancellationToken, Task>? _onStop;
 
     // Signaled on Dispose() so any probe thread still parked in CheckHealth() returns immediately
     // instead of sleeping out the full delay. This is what makes the slow fake non-leaking: the
@@ -193,18 +195,25 @@ internal sealed class FakeBusControl : IBusControl, IDisposable
         BusHealthStatus health = BusHealthStatus.Healthy,
         Exception? throwOnStart = null,
         Exception? throwOnCheckHealth = null,
-        TimeSpan checkHealthDelay = default)
+        TimeSpan checkHealthDelay = default,
+        Action? onStart = null,
+        Func<CancellationToken, Task>? onStop = null)
     {
+        _onStart = onStart;
+        _onStop = onStop;
         _health = health;
         _throwOnStart = throwOnStart;
         _throwOnCheckHealth = throwOnCheckHealth;
         _checkHealthDelay = checkHealthDelay;
     }
 
+    public int StartCount { get; private set; }
+    public int StopCount { get; private set; }
     public int PublishCount { get; private set; }
     public int SendCount { get; private set; }
     public int CheckHealthCount { get; private set; }
     public Uri? LastSendEndpointUri { get; private set; }
+    public List<Uri> SendEndpointUris { get; } = new();
 
     public Uri Address => new("loopback://localhost/");
 
@@ -212,6 +221,8 @@ internal sealed class FakeBusControl : IBusControl, IDisposable
 
     public Task<BusHandle> StartAsync(CancellationToken cancellationToken = default)
     {
+        _onStart?.Invoke();
+        StartCount++;
         if (_throwOnStart is not null)
         {
             throw _throwOnStart;
@@ -220,7 +231,11 @@ internal sealed class FakeBusControl : IBusControl, IDisposable
         return Task.FromResult<BusHandle>(new FakeBusHandle());
     }
 
-    public Task StopAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
+    public Task StopAsync(CancellationToken cancellationToken = default)
+    {
+        StopCount++;
+        return _onStop?.Invoke(cancellationToken) ?? Task.CompletedTask;
+    }
 
     // ----- IBus health -------------------------------------------------------------------------
 
@@ -270,6 +285,7 @@ internal sealed class FakeBusControl : IBusControl, IDisposable
     public Task<ISendEndpoint> GetSendEndpoint(Uri address)
     {
         LastSendEndpointUri = address;
+        SendEndpointUris.Add(address);
         return Task.FromResult<ISendEndpoint>(new FakeSendEndpoint(this));
     }
 

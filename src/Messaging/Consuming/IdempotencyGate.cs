@@ -49,9 +49,10 @@ namespace Messaging.Consuming;
 /// </list>
 /// <para>
 /// Recording the processed key with its retention window (Req 7.3) happens <em>after</em> the handler
-/// succeeds; that step is layered on with the EF-backed store in a later task. This gate owns only the
-/// pre-handler decision. It depends solely on the Domain ports, keeping EF/infrastructure types out of
-/// the Application layer (DIP).
+/// succeeds, through <see cref="RecordProcessedAsync"/>, which the <see cref="ConsumePipeline"/> calls
+/// only for a <see cref="IdempotencyGateOutcome.Proceed"/> decision. A recording failure propagates so
+/// the message is not acknowledged (Req 7.5). The gate depends solely on the Domain ports, keeping
+/// EF/infrastructure types out of the Application layer (DIP).
 /// </para>
 /// </remarks>
 public sealed class IdempotencyGate
@@ -127,5 +128,36 @@ public sealed class IdempotencyGate
         return new IdempotencyGateDecision(
             IdempotencyGateOutcome.Proceed,
             new ConsumeContext(idempotencyKey, IsDuplicate: false));
+    }
+
+    /// <summary>
+    /// Records the derived key as processed with the configured retention after the handler has
+    /// succeeded (Req 7.3). Does nothing unless <paramref name="decision"/> is
+    /// <see cref="IdempotencyGateOutcome.Proceed"/>: bypassed and duplicate decisions have nothing to
+    /// record.
+    /// </summary>
+    /// <param name="decision">The decision returned by <see cref="EvaluateAsync"/> for this message.</param>
+    /// <param name="cancellationToken">Token to cancel the recording.</param>
+    /// <exception cref="ArgumentNullException">If <paramref name="decision"/> is null.</exception>
+    /// <remarks>
+    /// Store failures are not caught: the exception propagates so the message is not acknowledged and
+    /// is redelivered (Req 7.5).
+    /// </remarks>
+    public Task RecordProcessedAsync(
+        IdempotencyGateDecision decision,
+        CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(decision);
+
+        if (decision.Outcome != IdempotencyGateOutcome.Proceed
+            || decision.Context.IdempotencyKey is not { } idempotencyKey)
+        {
+            return Task.CompletedTask;
+        }
+
+        return _idempotencyStore.RecordProcessedAsync(
+            idempotencyKey,
+            TimeSpan.FromSeconds(_config.RetentionSeconds),
+            cancellationToken);
     }
 }

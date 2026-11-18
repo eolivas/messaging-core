@@ -26,6 +26,7 @@ namespace Messaging.MassTransit.Tests;
 /// behaviours are broker behaviours, so only a real RabbitMQ demonstrates them.
 /// </summary>
 [Collection(RabbitMqCollection.Name)]
+[Trait("Category", "Integration")]
 public sealed class MassTransitRabbitMqIntegrationTests
 {
     private readonly RabbitMqContainerFixture _rabbit;

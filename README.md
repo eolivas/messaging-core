@@ -59,7 +59,8 @@ behind swappable provider adapters.
 - .NET 8 SDK
 - PostgreSQL (only when using the `Messaging.Persistence` outbox/idempotency stores)
 - Docker (integration tests start RabbitMQ, Kafka, and PostgreSQL containers via Testcontainers;
-  `docker compose up -d --wait` starts a local Kafka broker on `localhost:9092`)
+  `docker compose up -d --wait` starts a local Kafka broker on `localhost:9092`, and LocalStack
+  for SNS/SQS on `localhost:4566`)
 
 Nullable reference types and implicit usings are enabled across the solution, and package versions
 are pinned to exact patches.
@@ -208,6 +209,75 @@ live end-to-end):
   drives it on an interval yet, so recorded outbox entries are not published automatically.
 - **Observability backend wiring.** The host must register an exporter (e.g. OpenTelemetry) for
   the `Messaging.Core` meter/activity source and a concrete `IMessagingLog` adapter.
+
+## Amazon SNS/SQS provider (local development)
+
+The `Messaging.MassTransit` project also hosts the Amazon SNS/SQS transport (`AmazonSqs`), which
+backs Publish-Subscribe (SNS fan-out to SQS queues) and Message Queue (point-to-point over SQS).
+For local development and integration tests it runs against LocalStack, not real AWS.
+
+### Start the environment
+
+```bash
+docker compose up -d --wait
+```
+
+The LocalStack service exposes SNS and SQS on `http://localhost:4566`. Its health check queries both
+APIs, so the command returns once both are available. It needs no auth token and no real credentials.
+
+### Select the transport
+
+| Setting | Local value | Notes |
+|---|---|---|
+| `MassTransit:Transport` | `AmazonSqs` | Selects the SNS/SQS transport. |
+| `AmazonSqs:Region` | `us-east-1` | Required. Any valid AWS region identifier. |
+| `AmazonSqs:EndpointName` | e.g. `orders-service` | Required. Derives the consumer queue name. |
+| `AmazonSqs:ServiceUrl` | `http://localhost:4566` | Optional endpoint override. Plain `http` is accepted only for local hosts. |
+| `AmazonSqs:AccessKeyId` | `test` | Dummy value for LocalStack only. Set together with the secret key. |
+| `AmazonSqs:SecretAccessKey` | `test` | Dummy value for LocalStack only. |
+
+`ServiceUrl`, the keys, and the session token are treated as secret-bearing and are never logged or
+echoed in validation errors. In a real AWS deployment leave `ServiceUrl` and the keys unset so the
+default AWS credential chain applies. Other settings (`AutoCreateTopology`, `RawMessageDelivery`,
+`Fifo`, `MaxReceiveCount`, `VisibilityTimeoutSeconds`, name prefixes, and so on) are declared in
+`AmazonSqsProviderSettings` with defaults and are validated at startup.
+
+### LocalStack image tag
+
+Compose and the integration-test fixture both default to `localstack/localstack:4.14.0`. To try
+another patch version, set `LOCALSTACK_IMAGE_TAG`:
+
+```bash
+LOCALSTACK_IMAGE_TAG=4.14.0 docker compose up -d --wait
+```
+
+Only exact `major.minor.patch` tags are accepted by the test fixture; `latest` and bare major tags
+are rejected.
+
+**Why the tag is pinned.** LocalStack images published after the 4.x line (the unified image) require
+a `LOCALSTACK_AUTH_TOKEN`. The 4.x line runs without one but receives no further updates, so `4.14.0`
+is pinned deliberately to keep local development and CI free of a token.
+
+### IAM actions by role
+
+Grant only what the role needs. The second column applies when `AmazonSqs:AutoCreateTopology` is
+`true`; with `false` the provider only verifies that topology exists.
+
+| Role | Always | Added when `AutoCreateTopology = true` |
+|---|---|---|
+| Publisher | `sns:Publish`, `sns:GetTopicAttributes`, `sns:ListTopics` (reachability probe), `sqs:ListQueues` (reachability probe), `sqs:SendMessage` (Message Queue mode) | `sns:CreateTopic` |
+| Consumer | `sqs:ReceiveMessage`, `sqs:DeleteMessage`, `sqs:ChangeMessageVisibility`, `sqs:GetQueueUrl`, `sqs:GetQueueAttributes`, `sqs:SendMessage` (dead-letter queue), `sns:ListSubscriptionsByTopic`, `sns:GetTopicAttributes` | `sqs:CreateQueue`, `sqs:SetQueueAttributes`, `sns:CreateTopic`, `sns:Subscribe` |
+
+**Verify-only deployments.** The provider configures MassTransit not to manage topology, so at bus
+start MassTransit only looks up the queue the provider already verified or created (spike R1). A
+verify-only deployment (`AutoCreateTopology = false`, resources provisioned by infrastructure code)
+therefore needs no `sqs:CreateQueue`, `sqs:SetQueueAttributes`, or `sns:*` create permissions for
+the topology itself.
+
+**Open item: temporary bus queue.** MassTransit also creates an auto-delete temporary bus queue
+(`{machine}_..._bus_*`). Whether verify-only roles need `sqs:CreateQueue` (and queue deletion) for it
+has not yet been verified against a real IAM policy (design risk R2). Until it is, validate your
+policy in a non-production account before removing create permissions from consumer roles.
 
 ## Architecture notes
 

@@ -32,6 +32,16 @@
     <PackageReference Include="Testcontainers.RabbitMq" Version="3.10.0" />
   </ItemGroup>
 
+  <!--
+    Real LocalStack (SNS + SQS) for the AmazonSqs provider integration tests. Versions are pinned
+    exactly; AWSSDK.* match the versions the adapter package references.
+  -->
+  <ItemGroup>
+    <PackageReference Include="Testcontainers.LocalStack" Version="3.10.0" />
+    <PackageReference Include="AWSSDK.SQS" Version="4.0.100.14" />
+    <PackageReference Include="AWSSDK.SimpleNotificationService" Version="4.0.100.15" />
+  </ItemGroup>
+
   <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
