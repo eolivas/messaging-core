@@ -2,15 +2,17 @@
 
 A transport-neutral messaging library for .NET services. It defines a uniform publish/consume
 surface — reliable publishing, idempotent consumption, retries with backoff, dead-lettering,
-graceful shutdown, and observability — and keeps the concrete transport (RabbitMQ, Kafka, batch)
+graceful shutdown, and observability — and keeps the concrete transport (RabbitMQ, Kafka, Amazon SNS/SQS, batch)
 behind swappable provider adapters.
 
-> **Status: core complete; RabbitMQ and Kafka transports live, Batch adapter pending.**
+> **Status: core complete; RabbitMQ, Kafka, and Amazon SNS/SQS transports live, Batch adapter pending.**
 > The messaging engine, resilience, and persistence logic are
-> implemented and tested. The RabbitMQ provider (via MassTransit)
-> and the Kafka provider (native Confluent.Kafka client) are
-> implemented and verified against real brokers in containers, so
-> the library can publish to and consume from either end-to-end.
+> implemented and tested. The RabbitMQ provider (via MassTransit),
+> the Amazon SNS/SQS provider (via MassTransit, verified against
+> LocalStack), and the Kafka provider (native Confluent.Kafka client)
+> are implemented and verified against real brokers or LocalStack in
+> containers, so the library can publish to and consume from any of
+> them end-to-end.
 > The Batch adapter and some host wiring remain intentionally
 > deferred to follow-up specs
 > (see [Current status](#current-status)).
@@ -50,7 +52,7 @@ behind swappable provider adapters.
 | `Messaging.Abstractions` | Domain | Ports (interfaces), modes, and value types; references only `Messaging.Contracts`. |
 | `Messaging` | Application | Publish/consume pipelines, resilience, observability, configuration, lifecycle, and DI registration. |
 | `Messaging.Persistence` | Infrastructure | EF Core outbox recorder/dispatcher and idempotency store (PostgreSQL). |
-| `Messaging.MassTransit` | Infrastructure | MassTransit provider adapter for broker-shaped modes. **RabbitMQ transport implemented** (bus adapter + consume processor), verified against a real broker. |
+| `Messaging.MassTransit` | Infrastructure | MassTransit provider adapter for broker-shaped modes. **RabbitMQ and Amazon SNS/SQS (`AmazonSqs`) transports implemented** (bus adapter + consume processor). RabbitMQ is verified against a real broker, SNS/SQS against LocalStack. |
 | `Messaging.Kafka` | Infrastructure | Kafka streaming provider adapter over the native `Confluent.Kafka` client. **Implemented**, verified against a real broker. |
 | `Messaging.Batch` | Infrastructure | Scheduled/triggered batch provider adapter. *Shell.* |
 
@@ -58,7 +60,7 @@ behind swappable provider adapters.
 
 - .NET 8 SDK
 - PostgreSQL (only when using the `Messaging.Persistence` outbox/idempotency stores)
-- Docker (integration tests start RabbitMQ, Kafka, and PostgreSQL containers via Testcontainers;
+- Docker (integration tests start RabbitMQ, Kafka, PostgreSQL, and LocalStack (SNS/SQS) containers via Testcontainers;
   `docker compose up -d --wait` starts a local Kafka broker on `localhost:9092`, and LocalStack
   for SNS/SQS on `localhost:4566`)
 
@@ -87,6 +89,12 @@ Implemented and ready:
 - **Kafka transport (native Confluent.Kafka).** The
   `Messaging.Kafka` shell is now a live Streaming provider —
   see [Kafka provider highlights](#kafka-provider-highlights).
+- **Amazon SNS/SQS transport (via MassTransit).** The `AmazonSqs` transport in
+  `Messaging.MassTransit` is live and verified against LocalStack — see
+  [Amazon SNS/SQS provider](#amazon-snssqs-provider-local-development).
+- **Idempotency recording fix.** The consume pipeline now records the idempotency key after the
+  handler succeeds — see
+  [Shared core change: idempotency recording](#shared-core-change-idempotency-recording).
 - **Missing idempotency key fix.** A message whose idempotency
   key cannot be derived is now dead-lettered on the first
   attempt instead of being retried — see
@@ -242,6 +250,55 @@ default AWS credential chain applies. Other settings (`AutoCreateTopology`, `Raw
 `Fifo`, `MaxReceiveCount`, `VisibilityTimeoutSeconds`, name prefixes, and so on) are declared in
 `AmazonSqsProviderSettings` with defaults and are validated at startup.
 
+### Modes and FIFO
+
+- **Publish-Subscribe.** The publisher sends to an SNS topic and each subscribing consumer gets its
+  own SQS queue subscribed to that topic (fan-out). `AmazonSqs:RawMessageDelivery` (default `true`)
+  chooses raw or SNS-wrapped delivery to the queue.
+- **Message Queue.** Point-to-point over SQS; competing consumers share one queue.
+- **FIFO.** Set `AmazonSqs:Fifo` to `true` for FIFO topics and queues. `AmazonSqs:FifoGroupSelection`
+  picks the message group id: `CorrelationId` (default) or `MessageType`.
+
+### Settings reference
+
+All names are prefixed `AmazonSqs:` and bound from the provider-settings bag. Values out of range are
+rejected at startup. Only `Region` and `EndpointName` are required.
+
+| Setting | Default | Notes |
+|---|---|---|
+| `Region` | none | Required. AWS region identifier. |
+| `EndpointName` | none | Required. |
+| `ServiceUrl` | unset | Endpoint override (LocalStack). |
+| `AccessKeyId`, `SecretAccessKey`, `SessionToken` | unset | Explicit credentials. When unset, the default AWS credential chain applies. |
+| `TopicNamePrefix`, `QueueNamePrefix` | empty | Prepended to derived topic and queue names. |
+| `DeadLetterQueueSuffix` | `_error` | Derives the dead-letter queue name. |
+| `AutoCreateTopology` | `true` | `true` creates missing topics, queues, and subscriptions. `false` only verifies they exist. |
+| `RawMessageDelivery` | `true` | Raw delivery on SNS-to-SQS subscriptions. |
+| `Fifo` | `false` | FIFO topics and queues. |
+| `FifoGroupSelection` | `CorrelationId` | `CorrelationId` or `MessageType`. |
+| `KmsMasterKeyId` | unset | Optional server-side encryption key. |
+| `MaxReceiveCount` | `5` | Redrive threshold to the dead-letter queue (1 to 1000). |
+| `VisibilityTimeoutSeconds` | `30` | 1 to 43200. |
+| `MessageRetentionSeconds` | `345600` (4 days) | 60 to 1209600. |
+| `MaxMessageSizeBytes` | `262144` (256 KiB) | 1 to 262144, the SQS limit. |
+| `WaitTimeSeconds` | `20` | Long-poll wait, 0 to 20. |
+| `MaxMessagesPerReceive` | `10` | 1 to 10. |
+| `ConcurrencyLimit` | `10` | 1 to 1000. |
+
+**Credentials.** Never put real keys in committed configuration. In AWS, rely on the default
+credential chain (instance or task role). If explicit keys are needed, supply them from environment
+variables or a secret store. The `test`/`test` values above are for LocalStack only.
+
+### Run the tests
+
+```bash
+# Unit tests (no Docker)
+dotnet test tests/Messaging.MassTransit.Tests --filter "Category!=Integration"
+
+# Integration tests (require Docker; LocalStack is started via Testcontainers)
+dotnet test tests/Messaging.MassTransit.Tests --filter "Category=Integration" --blame-hang-timeout 2m
+```
+
 ### LocalStack image tag
 
 Compose and the integration-test fixture both default to `localstack/localstack:4.14.0`. To try
@@ -279,10 +336,17 @@ the topology itself.
 has not yet been verified against a real IAM policy (design risk R2). Until it is, validate your
 policy in a non-production account before removing create permissions from consumer roles.
 
+### Shared core change: idempotency recording
+
+Delivered with the SNS/SQS provider but applies to every provider (RabbitMQ, Kafka, SNS/SQS). The
+consume pipeline now records the idempotency key **after** the handler succeeds. A handler failure
+records nothing, and a failure while recording propagates, so the message is not acknowledged and is
+redelivered under the provider's at-least-once semantics.
+
 ## Architecture notes
 
 - The core provides a uniform retry/backoff configuration surface rather than a bespoke engine, and
-  it is the single source of retry behavior: for the RabbitMQ and Kafka providers the core pipeline owns
+  it is the single source of retry behavior: for the RabbitMQ, Kafka, and Amazon SNS/SQS providers the core pipeline owns
   retry, backoff, and dead-lettering, and a transport-level redelivery policy is deliberately not
   layered on top so attempt counts stay bounded. The consumer pulls in-process at its own pace, so
   backpressure is natural and no circuit breaker is needed on the consume path.
