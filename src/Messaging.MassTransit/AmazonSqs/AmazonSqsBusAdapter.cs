@@ -304,9 +304,13 @@ public sealed class AmazonSqsBusAdapter : IMassTransitBusAdapter, IDeadLetterQue
             await ping.ConfigureAwait(false);
             return true;
         }
-        catch
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             // Authorization failures, timeouts, and transport errors never reach the readiness caller.
+            _logger.LogWarning(
+                ex,
+                "Amazon SQS reachability probe failed for region {Region}; reporting not reachable.",
+                _settings.Region);
             return false;
         }
     }

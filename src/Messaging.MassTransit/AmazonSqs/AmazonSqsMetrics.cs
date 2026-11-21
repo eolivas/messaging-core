@@ -1,5 +1,7 @@
 using System.Collections.Concurrent;
 using System.Diagnostics.Metrics;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Messaging.MassTransit.AmazonSqs;
 
@@ -34,10 +36,13 @@ public sealed class AmazonSqsMetrics : IDisposable
     private readonly Counter<long> _deadLettered;
     private readonly Counter<long> _failed;
     private readonly ConcurrentDictionary<string, QueueDepth> _depths = new(StringComparer.Ordinal);
+    private readonly ILogger<AmazonSqsMetrics> _logger;
 
     /// <summary>Creates the metrics and registers the counters and gauges.</summary>
-    public AmazonSqsMetrics()
+    /// <param name="logger">Records suppressed sampling and emission failures. Defaults to a no-op logger.</param>
+    public AmazonSqsMetrics(ILogger<AmazonSqsMetrics>? logger = null)
     {
+        _logger = logger ?? NullLogger<AmazonSqsMetrics>.Instance;
         _meter = new Meter(MeterName);
         _published = _meter.CreateCounter<long>(
             "messaging.amazonsqs.published.count", "{message}", "Messages published to SNS or SQS.");
@@ -109,9 +114,14 @@ public sealed class AmazonSqsMetrics : IDisposable
             {
                 throw;
             }
-            catch
+            catch (Exception ex) when (ex is not OutOfMemoryException)
             {
-                // Best effort: a sampling failure must never surface (Req 16.6).
+                // Best effort: a sampling failure must never surface (Req 16.6). It is recorded so a
+                // stale gauge can be explained.
+                _logger.LogWarning(
+                    ex,
+                    "Amazon SQS queue depth sampling failed for queue {QueueName}; keeping the previous sample.",
+                    queueName);
             }
         }
     }
@@ -138,15 +148,16 @@ public sealed class AmazonSqsMetrics : IDisposable
             ? value
             : 0;
 
-    private static void Add(Counter<long> counter, string tagKey, string name)
+    private void Add(Counter<long> counter, string tagKey, string name)
     {
         try
         {
             counter.Add(1, new KeyValuePair<string, object?>(tagKey, name));
         }
-        catch
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             // Best effort: metric emission must never affect message flow (Req 15.7).
+            _logger.LogWarning(ex, "Amazon SQS metric emission failed for {TagKey} {Name}.", tagKey, name);
         }
     }
 
