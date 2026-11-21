@@ -1,4 +1,5 @@
 using Messaging.Abstractions;
+using Messaging.MassTransit.AmazonSqs;
 
 namespace Messaging.MassTransit.Configuration;
 
@@ -59,11 +60,16 @@ public sealed class MassTransitProviderSettings
     public MassTransitProviderSettings(
         MassTransitTransport transport,
         string? connectionString,
-        string? host = null)
+        string? host = null,
+        AmazonSqsProviderSettings? amazonSqs = null)
     {
         Transport = transport;
 
-        if (transport != MassTransitTransport.InMemory && string.IsNullOrWhiteSpace(connectionString))
+        // Amazon SQS authenticates through the AWS credential chain or explicit AmazonSqs:* keys, so it
+        // needs no connection string.
+        if (transport != MassTransitTransport.InMemory
+            && transport != MassTransitTransport.AmazonSqs
+            && string.IsNullOrWhiteSpace(connectionString))
         {
             throw new ArgumentException(
                 $"A '{ConnectionSettingName}' is required for transport '{transport}'.",
@@ -83,7 +89,31 @@ public sealed class MassTransitProviderSettings
         }
 
         ConnectionString = connectionString ?? string.Empty;
-        Host = string.IsNullOrWhiteSpace(host) ? transport.ToString() : host!;
+        AmazonSqs = amazonSqs;
+        Host = !string.IsNullOrWhiteSpace(host)
+            ? host!
+            : DeriveAmazonSqsHost(transport, amazonSqs) ?? transport.ToString();
+    }
+
+    /// <summary>
+    /// The non-secret display host for Amazon SQS: the <c>ServiceUrl</c> host (host only, so userinfo
+    /// and query never leak) when set and parseable, otherwise the region; null when not applicable.
+    /// </summary>
+    private static string? DeriveAmazonSqsHost(MassTransitTransport transport, AmazonSqsProviderSettings? amazonSqs)
+    {
+        if (transport != MassTransitTransport.AmazonSqs || amazonSqs is null)
+        {
+            return null;
+        }
+
+        if (!string.IsNullOrWhiteSpace(amazonSqs.ServiceUrl)
+            && Uri.TryCreate(amazonSqs.ServiceUrl, UriKind.Absolute, out var uri)
+            && !string.IsNullOrEmpty(uri.Host))
+        {
+            return uri.Host;
+        }
+
+        return string.IsNullOrWhiteSpace(amazonSqs.Region) ? null : amazonSqs.Region;
     }
 
     /// <summary>
@@ -120,6 +150,9 @@ public sealed class MassTransitProviderSettings
     /// <summary>A non-secret display name for the broker, used when naming an unavailable dependency.</summary>
     public string Host { get; }
 
+    /// <summary>The optional Amazon SNS/SQS settings; set only for <see cref="MassTransitTransport.AmazonSqs"/>.</summary>
+    public AmazonSqsProviderSettings? AmazonSqs { get; }
+
     /// <summary>
     /// Declares the provider-specific settings so the configuration validator can confirm their
     /// presence and permitted values during startup validation (Req 2.5). The connection string is
@@ -139,16 +172,24 @@ public sealed class MassTransitProviderSettings
             ? RabbitMqConnectionFormat
             : "non-empty connection string";
 
-        return new[]
+        var descriptors = new List<ProviderSettingDescriptor>
         {
-            new ProviderSettingDescriptor(
+            new(
                 TransportSettingName,
                 Required: true,
                 PermittedValuesOrRange: transportValues),
-            new ProviderSettingDescriptor(
+            new(
                 ConnectionSettingName,
-                Required: Transport != MassTransitTransport.InMemory,
+                Required: Transport != MassTransitTransport.InMemory
+                    && Transport != MassTransitTransport.AmazonSqs,
                 PermittedValuesOrRange: connectionFormatHint),
         };
+
+        if (Transport == MassTransitTransport.AmazonSqs)
+        {
+            descriptors.AddRange(AmazonSqsProviderSettings.Describe());
+        }
+
+        return descriptors;
     }
 }

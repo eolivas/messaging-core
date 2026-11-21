@@ -50,6 +50,9 @@ conflicts with a library's idiom, follow the rule and flag the conflict.
 - Fail fast on invalid state; throw domain-specific exceptions, not bare `Exception`.
 - Structured logging only. Include a correlation id on every request.
 - Log where the error is handled, not at every layer it passes through (no double-logging).
+- A catch that suppresses an exception must still record it (structured log, failure counter, or both). Silent swallowing is not allowed: "suppress" means "do not propagate", not "do not observe". A catch with an empty body, or only a comment, is a defect.
+- Catch the narrowest type that fits. Use `catch (Exception ex) when (...)` for best-effort boundaries; never a bare `catch`, and never swallow fatal exceptions (`OutOfMemoryException`).
+- Exempt: rethrow, translating into another exception that carries the original as inner exception, and expected control-flow results (e.g. `QueueDoesNotExistException` mapped to `null`) that are documented at the catch.
 
 ## Testing
 - Every command/query handler has unit tests; domain logic is covered at the unit level (xUnit).

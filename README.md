@@ -2,15 +2,17 @@
 
 A transport-neutral messaging library for .NET services. It defines a uniform publish/consume
 surface — reliable publishing, idempotent consumption, retries with backoff, dead-lettering,
-graceful shutdown, and observability — and keeps the concrete transport (RabbitMQ, Kafka, batch)
+graceful shutdown, and observability — and keeps the concrete transport (RabbitMQ, Kafka, Amazon SNS/SQS, batch)
 behind swappable provider adapters.
 
-> **Status: core complete; RabbitMQ and Kafka transports live, Batch adapter pending.**
+> **Status: core complete; RabbitMQ, Kafka, and Amazon SNS/SQS transports live, Batch adapter pending.**
 > The messaging engine, resilience, and persistence logic are
-> implemented and tested. The RabbitMQ provider (via MassTransit)
-> and the Kafka provider (native Confluent.Kafka client) are
-> implemented and verified against real brokers in containers, so
-> the library can publish to and consume from either end-to-end.
+> implemented and tested. The RabbitMQ provider (via MassTransit),
+> the Amazon SNS/SQS provider (via MassTransit, verified against
+> LocalStack), and the Kafka provider (native Confluent.Kafka client)
+> are implemented and verified against real brokers or LocalStack in
+> containers, so the library can publish to and consume from any of
+> them end-to-end.
 > The Batch adapter and some host wiring remain intentionally
 > deferred to follow-up specs
 > (see [Current status](#current-status)).
@@ -50,7 +52,7 @@ behind swappable provider adapters.
 | `Messaging.Abstractions` | Domain | Ports (interfaces), modes, and value types; references only `Messaging.Contracts`. |
 | `Messaging` | Application | Publish/consume pipelines, resilience, observability, configuration, lifecycle, and DI registration. |
 | `Messaging.Persistence` | Infrastructure | EF Core outbox recorder/dispatcher and idempotency store (PostgreSQL). |
-| `Messaging.MassTransit` | Infrastructure | MassTransit provider adapter for broker-shaped modes. **RabbitMQ transport implemented** (bus adapter + consume processor), verified against a real broker. |
+| `Messaging.MassTransit` | Infrastructure | MassTransit provider adapter for broker-shaped modes. **RabbitMQ and Amazon SNS/SQS (`AmazonSqs`) transports implemented** (bus adapter + consume processor). RabbitMQ is verified against a real broker, SNS/SQS against LocalStack. |
 | `Messaging.Kafka` | Infrastructure | Kafka streaming provider adapter over the native `Confluent.Kafka` client. **Implemented**, verified against a real broker. |
 | `Messaging.Batch` | Infrastructure | Scheduled/triggered batch provider adapter. *Shell.* |
 
@@ -58,8 +60,9 @@ behind swappable provider adapters.
 
 - .NET 8 SDK
 - PostgreSQL (only when using the `Messaging.Persistence` outbox/idempotency stores)
-- Docker (integration tests start RabbitMQ, Kafka, and PostgreSQL containers via Testcontainers;
-  `docker compose up -d --wait` starts a local Kafka broker on `localhost:9092`)
+- Docker (integration tests start RabbitMQ, Kafka, PostgreSQL, and LocalStack (SNS/SQS) containers via Testcontainers;
+  `docker compose up -d --wait` starts a local Kafka broker on `localhost:9092`, and LocalStack
+  for SNS/SQS on `localhost:4566`)
 
 Nullable reference types and implicit usings are enabled across the solution, and package versions
 are pinned to exact patches.
@@ -86,6 +89,12 @@ Implemented and ready:
 - **Kafka transport (native Confluent.Kafka).** The
   `Messaging.Kafka` shell is now a live Streaming provider —
   see [Kafka provider highlights](#kafka-provider-highlights).
+- **Amazon SNS/SQS transport (via MassTransit).** The `AmazonSqs` transport in
+  `Messaging.MassTransit` is live and verified against LocalStack — see
+  [Amazon SNS/SQS provider](#amazon-snssqs-provider-local-development).
+- **Idempotency recording fix.** The consume pipeline now records the idempotency key after the
+  handler succeeds — see
+  [Shared core change: idempotency recording](#shared-core-change-idempotency-recording).
 - **Missing idempotency key fix.** A message whose idempotency
   key cannot be derived is now dead-lettered on the first
   attempt instead of being retried — see
@@ -209,10 +218,135 @@ live end-to-end):
 - **Observability backend wiring.** The host must register an exporter (e.g. OpenTelemetry) for
   the `Messaging.Core` meter/activity source and a concrete `IMessagingLog` adapter.
 
+## Amazon SNS/SQS provider (local development)
+
+The `Messaging.MassTransit` project also hosts the Amazon SNS/SQS transport (`AmazonSqs`), which
+backs Publish-Subscribe (SNS fan-out to SQS queues) and Message Queue (point-to-point over SQS).
+For local development and integration tests it runs against LocalStack, not real AWS.
+
+### Start the environment
+
+```bash
+docker compose up -d --wait
+```
+
+The LocalStack service exposes SNS and SQS on `http://localhost:4566`. Its health check queries both
+APIs, so the command returns once both are available. It needs no auth token and no real credentials.
+
+### Select the transport
+
+| Setting | Local value | Notes |
+|---|---|---|
+| `MassTransit:Transport` | `AmazonSqs` | Selects the SNS/SQS transport. |
+| `AmazonSqs:Region` | `us-east-1` | Required. Any valid AWS region identifier. |
+| `AmazonSqs:EndpointName` | e.g. `orders-service` | Required. Derives the consumer queue name. |
+| `AmazonSqs:ServiceUrl` | `http://localhost:4566` | Optional endpoint override. Plain `http` is accepted only for local hosts. |
+| `AmazonSqs:AccessKeyId` | `test` | Dummy value for LocalStack only. Set together with the secret key. |
+| `AmazonSqs:SecretAccessKey` | `test` | Dummy value for LocalStack only. |
+
+`ServiceUrl`, the keys, and the session token are treated as secret-bearing and are never logged or
+echoed in validation errors. In a real AWS deployment leave `ServiceUrl` and the keys unset so the
+default AWS credential chain applies. Other settings (`AutoCreateTopology`, `RawMessageDelivery`,
+`Fifo`, `MaxReceiveCount`, `VisibilityTimeoutSeconds`, name prefixes, and so on) are declared in
+`AmazonSqsProviderSettings` with defaults and are validated at startup.
+
+### Modes and FIFO
+
+- **Publish-Subscribe.** The publisher sends to an SNS topic and each subscribing consumer gets its
+  own SQS queue subscribed to that topic (fan-out). `AmazonSqs:RawMessageDelivery` (default `true`)
+  chooses raw or SNS-wrapped delivery to the queue.
+- **Message Queue.** Point-to-point over SQS; competing consumers share one queue.
+- **FIFO.** Set `AmazonSqs:Fifo` to `true` for FIFO topics and queues. `AmazonSqs:FifoGroupSelection`
+  picks the message group id: `CorrelationId` (default) or `MessageType`.
+
+### Settings reference
+
+All names are prefixed `AmazonSqs:` and bound from the provider-settings bag. Values out of range are
+rejected at startup. Only `Region` and `EndpointName` are required.
+
+| Setting | Default | Notes |
+|---|---|---|
+| `Region` | none | Required. AWS region identifier. |
+| `EndpointName` | none | Required. |
+| `ServiceUrl` | unset | Endpoint override (LocalStack). |
+| `AccessKeyId`, `SecretAccessKey`, `SessionToken` | unset | Explicit credentials. When unset, the default AWS credential chain applies. |
+| `TopicNamePrefix`, `QueueNamePrefix` | empty | Prepended to derived topic and queue names. |
+| `DeadLetterQueueSuffix` | `_error` | Derives the dead-letter queue name. |
+| `AutoCreateTopology` | `true` | `true` creates missing topics, queues, and subscriptions. `false` only verifies they exist. |
+| `RawMessageDelivery` | `true` | Raw delivery on SNS-to-SQS subscriptions. |
+| `Fifo` | `false` | FIFO topics and queues. |
+| `FifoGroupSelection` | `CorrelationId` | `CorrelationId` or `MessageType`. |
+| `KmsMasterKeyId` | unset | Optional server-side encryption key. |
+| `MaxReceiveCount` | `5` | Redrive threshold to the dead-letter queue (1 to 1000). |
+| `VisibilityTimeoutSeconds` | `30` | 1 to 43200. |
+| `MessageRetentionSeconds` | `345600` (4 days) | 60 to 1209600. |
+| `MaxMessageSizeBytes` | `262144` (256 KiB) | 1 to 262144, the SQS limit. |
+| `WaitTimeSeconds` | `20` | Long-poll wait, 0 to 20. |
+| `MaxMessagesPerReceive` | `10` | 1 to 10. |
+| `ConcurrencyLimit` | `10` | 1 to 1000. |
+
+**Credentials.** Never put real keys in committed configuration. In AWS, rely on the default
+credential chain (instance or task role). If explicit keys are needed, supply them from environment
+variables or a secret store. The `test`/`test` values above are for LocalStack only.
+
+### Run the tests
+
+```bash
+# Unit tests (no Docker)
+dotnet test tests/Messaging.MassTransit.Tests --filter "Category!=Integration"
+
+# Integration tests (require Docker; LocalStack is started via Testcontainers)
+dotnet test tests/Messaging.MassTransit.Tests --filter "Category=Integration" --blame-hang-timeout 2m
+```
+
+### LocalStack image tag
+
+Compose and the integration-test fixture both default to `localstack/localstack:4.14.0`. To try
+another patch version, set `LOCALSTACK_IMAGE_TAG`:
+
+```bash
+LOCALSTACK_IMAGE_TAG=4.14.0 docker compose up -d --wait
+```
+
+Only exact `major.minor.patch` tags are accepted by the test fixture; `latest` and bare major tags
+are rejected.
+
+**Why the tag is pinned.** LocalStack images published after the 4.x line (the unified image) require
+a `LOCALSTACK_AUTH_TOKEN`. The 4.x line runs without one but receives no further updates, so `4.14.0`
+is pinned deliberately to keep local development and CI free of a token.
+
+### IAM actions by role
+
+Grant only what the role needs. The second column applies when `AmazonSqs:AutoCreateTopology` is
+`true`; with `false` the provider only verifies that topology exists.
+
+| Role | Always | Added when `AutoCreateTopology = true` |
+|---|---|---|
+| Publisher | `sns:Publish`, `sns:GetTopicAttributes`, `sns:ListTopics` (reachability probe), `sqs:ListQueues` (reachability probe), `sqs:SendMessage` (Message Queue mode) | `sns:CreateTopic` |
+| Consumer | `sqs:ReceiveMessage`, `sqs:DeleteMessage`, `sqs:ChangeMessageVisibility`, `sqs:GetQueueUrl`, `sqs:GetQueueAttributes`, `sqs:SendMessage` (dead-letter queue), `sns:ListSubscriptionsByTopic`, `sns:GetTopicAttributes` | `sqs:CreateQueue`, `sqs:SetQueueAttributes`, `sns:CreateTopic`, `sns:Subscribe` |
+
+**Verify-only deployments.** The provider configures MassTransit not to manage topology, so at bus
+start MassTransit only looks up the queue the provider already verified or created (spike R1). A
+verify-only deployment (`AutoCreateTopology = false`, resources provisioned by infrastructure code)
+therefore needs no `sqs:CreateQueue`, `sqs:SetQueueAttributes`, or `sns:*` create permissions for
+the topology itself.
+
+**Open item: temporary bus queue.** MassTransit also creates an auto-delete temporary bus queue
+(`{machine}_..._bus_*`). Whether verify-only roles need `sqs:CreateQueue` (and queue deletion) for it
+has not yet been verified against a real IAM policy (design risk R2). Until it is, validate your
+policy in a non-production account before removing create permissions from consumer roles.
+
+### Shared core change: idempotency recording
+
+Delivered with the SNS/SQS provider but applies to every provider (RabbitMQ, Kafka, SNS/SQS). The
+consume pipeline now records the idempotency key **after** the handler succeeds. A handler failure
+records nothing, and a failure while recording propagates, so the message is not acknowledged and is
+redelivered under the provider's at-least-once semantics.
+
 ## Architecture notes
 
 - The core provides a uniform retry/backoff configuration surface rather than a bespoke engine, and
-  it is the single source of retry behavior: for the RabbitMQ and Kafka providers the core pipeline owns
+  it is the single source of retry behavior: for the RabbitMQ, Kafka, and Amazon SNS/SQS providers the core pipeline owns
   retry, backoff, and dead-lettering, and a transport-level redelivery policy is deliberately not
   layered on top so attempt counts stay bounded. The consumer pulls in-process at its own pace, so
   backpressure is natural and no circuit breaker is needed on the consume path.

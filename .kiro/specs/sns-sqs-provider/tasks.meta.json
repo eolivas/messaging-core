@@ -1,0 +1,1106 @@
+{
+  "pbtResults": {
+    "5.3 Write property test for the wire round trip": {
+      "status": "passed",
+      "lastRunTimestamp": 1794949221971
+    },
+    "5.5 Write property test for correlation mapping": {
+      "status": "passed",
+      "lastRunTimestamp": 1794949533906
+    },
+    "5.6 Write property test for the size guard": {
+      "status": "passed",
+      "lastRunTimestamp": 1794949883580
+    },
+    "7.7 Write property test for verify-only mode": {
+      "status": "passed",
+      "lastRunTimestamp": 1795012360319
+    },
+    "9.4 Write property test for in-flight tracking": {
+      "status": "passed",
+      "lastRunTimestamp": 1795016569390
+    },
+    "11.4 Write property test for diagnostics": {
+      "status": "passed",
+      "lastRunTimestamp": 1795021571214
+    }
+  },
+  "executionHistory": {
+    "1.1 Add the AWS transport packages": [
+      {
+        "executionId": "8e59d401-6a23-446f-b9fa-93c4ea849bf9",
+        "chatSessionId": "sess_a501598b-64ad-4a4e-9dc7-75e276dc4ab9",
+        "timestamp": 1794936153685
+      },
+      {
+        "executionId": "8e59d401-6a23-446f-b9fa-93c4ea849bf9",
+        "chatSessionId": "sess_a501598b-64ad-4a4e-9dc7-75e276dc4ab9",
+        "timestamp": 1794936291399
+      }
+    ],
+    "1.2 Add `LocalStackImageTag` and `LocalStackContainerFixture`": [
+      {
+        "executionId": "8e59d401-6a23-446f-b9fa-93c4ea849bf9",
+        "chatSessionId": "sess_a501598b-64ad-4a4e-9dc7-75e276dc4ab9",
+        "timestamp": 1794936295124
+      },
+      {
+        "executionId": "8e59d401-6a23-446f-b9fa-93c4ea849bf9",
+        "chatSessionId": "sess_a501598b-64ad-4a4e-9dc7-75e276dc4ab9",
+        "timestamp": 1794936412825
+      }
+    ],
+    "1.4 Spike R1 and R2: MassTransit against pre-provisioned resources": [
+      {
+        "executionId": "8e59d401-6a23-446f-b9fa-93c4ea849bf9",
+        "chatSessionId": "sess_a501598b-64ad-4a4e-9dc7-75e276dc4ab9",
+        "timestamp": 1794936418772
+      },
+      {
+        "executionId": "8e59d401-6a23-446f-b9fa-93c4ea849bf9",
+        "chatSessionId": "sess_a501598b-64ad-4a4e-9dc7-75e276dc4ab9",
+        "timestamp": 1794937971614
+      }
+    ],
+    "1.3 Spike R5: AWS SDK v4 and a MassTransit round trip on LocalStack 4.14.0": [
+      {
+        "executionId": "8e59d401-6a23-446f-b9fa-93c4ea849bf9",
+        "chatSessionId": "sess_a501598b-64ad-4a4e-9dc7-75e276dc4ab9",
+        "timestamp": 1794936420114
+      },
+      {
+        "executionId": "8e59d401-6a23-446f-b9fa-93c4ea849bf9",
+        "chatSessionId": "sess_a501598b-64ad-4a4e-9dc7-75e276dc4ab9",
+        "timestamp": 1794937972101
+      }
+    ],
+    "1.5 Spike R3: rethrow error pipe leaves the message undeleted": [
+      {
+        "executionId": "8e59d401-6a23-446f-b9fa-93c4ea849bf9",
+        "chatSessionId": "sess_a501598b-64ad-4a4e-9dc7-75e276dc4ab9",
+        "timestamp": 1794936420589
+      },
+      {
+        "executionId": "8e59d401-6a23-446f-b9fa-93c4ea849bf9",
+        "chatSessionId": "sess_a501598b-64ad-4a4e-9dc7-75e276dc4ab9",
+        "timestamp": 1794937971215
+      }
+    ],
+    "1.6 Spike R4: raw and SNS-wrapped bodies reach the consumer with attributes": [
+      {
+        "executionId": "8e59d401-6a23-446f-b9fa-93c4ea849bf9",
+        "chatSessionId": "sess_a501598b-64ad-4a4e-9dc7-75e276dc4ab9",
+        "timestamp": 1794936421698
+      },
+      {
+        "executionId": "8e59d401-6a23-446f-b9fa-93c4ea849bf9",
+        "chatSessionId": "sess_a501598b-64ad-4a4e-9dc7-75e276dc4ab9",
+        "timestamp": 1794937972427
+      }
+    ],
+    "1.7 Record spike findings in the design": [
+      {
+        "executionId": "8e59d401-6a23-446f-b9fa-93c4ea849bf9",
+        "chatSessionId": "sess_a501598b-64ad-4a4e-9dc7-75e276dc4ab9",
+        "timestamp": 1794938059089
+      },
+      {
+        "executionId": "8e59d401-6a23-446f-b9fa-93c4ea849bf9",
+        "chatSessionId": "sess_a501598b-64ad-4a4e-9dc7-75e276dc4ab9",
+        "timestamp": 1794938145909
+      }
+    ],
+    "1. Risk spike (R1 to R5) against LocalStack 4.14.0": [
+      {
+        "executionId": "8e59d401-6a23-446f-b9fa-93c4ea849bf9",
+        "chatSessionId": "sess_a501598b-64ad-4a4e-9dc7-75e276dc4ab9",
+        "timestamp": 1794938146433
+      }
+    ],
+    "2. Checkpoint - spike gate": [
+      {
+        "executionId": "7b02b0e9-1ef0-46c1-bc75-233dcd5a181e",
+        "chatSessionId": "sess_f6648b35-cdde-45cc-9cc7-77999ed629c7",
+        "timestamp": 1794938249277
+      },
+      {
+        "executionId": "7b02b0e9-1ef0-46c1-bc75-233dcd5a181e",
+        "chatSessionId": "sess_f6648b35-cdde-45cc-9cc7-77999ed629c7",
+        "timestamp": 1794938493586
+      }
+    ],
+    "3.2 Implement `AmazonSqsProviderSettings` and shell settings changes": [
+      {
+        "executionId": "86955123-09b6-48a5-bb4b-ad67b00d4fb2",
+        "chatSessionId": "sess_b74dc471-ee49-4920-be92-5c788d272a1b",
+        "timestamp": 1794938530656
+      },
+      {
+        "executionId": "86955123-09b6-48a5-bb4b-ad67b00d4fb2",
+        "chatSessionId": "sess_b74dc471-ee49-4920-be92-5c788d272a1b",
+        "timestamp": 1794938706781
+      }
+    ],
+    "3.1 Add the domain exceptions": [
+      {
+        "executionId": "244d8943-e39e-4910-82bf-fb97eb77dd65",
+        "chatSessionId": "sess_29d4dce6-3a7c-4839-9c5f-2e84e3dab5af",
+        "timestamp": 1794938733495
+      },
+      {
+        "executionId": "244d8943-e39e-4910-82bf-fb97eb77dd65",
+        "chatSessionId": "sess_29d4dce6-3a7c-4839-9c5f-2e84e3dab5af",
+        "timestamp": 1794938790330
+      },
+      {
+        "executionId": "3f7ac27c-e92d-4263-9aaa-47ada008cf7a",
+        "chatSessionId": "sess_3a154830-a914-46bf-be17-4e544efeebda",
+        "timestamp": 1794938887861
+      },
+      {
+        "executionId": "3f7ac27c-e92d-4263-9aaa-47ada008cf7a",
+        "chatSessionId": "sess_3a154830-a914-46bf-be17-4e544efeebda",
+        "timestamp": 1794938942673
+      }
+    ],
+    "3.3 Implement `AmazonSqsStartupValidator`": [
+      {
+        "executionId": "244d8943-e39e-4910-82bf-fb97eb77dd65",
+        "chatSessionId": "sess_29d4dce6-3a7c-4839-9c5f-2e84e3dab5af",
+        "timestamp": 1794938793695
+      },
+      {
+        "executionId": "244d8943-e39e-4910-82bf-fb97eb77dd65",
+        "chatSessionId": "sess_29d4dce6-3a7c-4839-9c5f-2e84e3dab5af",
+        "timestamp": 1794938878848
+      }
+    ],
+    "3. Settings, exceptions, and startup validation": [
+      {
+        "executionId": "244d8943-e39e-4910-82bf-fb97eb77dd65",
+        "chatSessionId": "sess_29d4dce6-3a7c-4839-9c5f-2e84e3dab5af",
+        "timestamp": 1794938879150
+      }
+    ],
+    "3.4 Write property test for startup validation": [
+      {
+        "executionId": "4e4b7fee-2909-4a9c-af22-c31b8af64472",
+        "chatSessionId": "sess_4aab2128-c720-45ca-b89e-7f28e7746565",
+        "timestamp": 1794938974872
+      },
+      {
+        "executionId": "4e4b7fee-2909-4a9c-af22-c31b8af64472",
+        "chatSessionId": "sess_4aab2128-c720-45ca-b89e-7f28e7746565",
+        "timestamp": 1794939169928
+      }
+    ],
+    "3.5 Write unit tests for settings and validation": [
+      {
+        "executionId": "27fa8687-cfd9-4635-bad8-0daf85d7367f",
+        "chatSessionId": "sess_a02189ee-c140-4e47-bce7-5122add32b52",
+        "timestamp": 1794939201746
+      },
+      {
+        "executionId": "27fa8687-cfd9-4635-bad8-0daf85d7367f",
+        "chatSessionId": "sess_a02189ee-c140-4e47-bce7-5122add32b52",
+        "timestamp": 1794939516578
+      }
+    ],
+    "4.1 Implement `SnsSqsNamingConvention`": [
+      {
+        "executionId": "417573d2-7a3c-4425-9e1e-0ef89f773444",
+        "chatSessionId": "sess_55de3a5c-e739-4099-abe5-e39755c7c79d",
+        "timestamp": 1794939549238
+      },
+      {
+        "executionId": "417573d2-7a3c-4425-9e1e-0ef89f773444",
+        "chatSessionId": "sess_55de3a5c-e739-4099-abe5-e39755c7c79d",
+        "timestamp": 1794939845683
+      }
+    ],
+    "4.5 Implement `SnsSqsTopologyPlanner` and the plan records": [
+      {
+        "executionId": "417573d2-7a3c-4425-9e1e-0ef89f773444",
+        "chatSessionId": "sess_55de3a5c-e739-4099-abe5-e39755c7c79d",
+        "timestamp": 1794939549705
+      },
+      {
+        "executionId": "417573d2-7a3c-4425-9e1e-0ef89f773444",
+        "chatSessionId": "sess_55de3a5c-e739-4099-abe5-e39755c7c79d",
+        "timestamp": 1794939846348
+      }
+    ],
+    "4. Naming convention and topology planning": [
+      {
+        "executionId": "417573d2-7a3c-4425-9e1e-0ef89f773444",
+        "chatSessionId": "sess_55de3a5c-e739-4099-abe5-e39755c7c79d",
+        "timestamp": 1794939847053
+      }
+    ],
+    "4.2 Write property test for topic and queue names": [
+      {
+        "executionId": "39bc4115-74d4-4498-8a5c-8133094c07fe",
+        "chatSessionId": "sess_ded70586-6a28-49e3-bf39-eefe93c5bb66",
+        "timestamp": 1794939879565
+      },
+      {
+        "executionId": "39bc4115-74d4-4498-8a5c-8133094c07fe",
+        "chatSessionId": "sess_ded70586-6a28-49e3-bf39-eefe93c5bb66",
+        "timestamp": 1794940017072
+      }
+    ],
+    "4.3 Write property test for dead-letter queue names": [
+      {
+        "executionId": "9823e65d-2ad7-4ad5-8df0-02ee7abeff2d",
+        "chatSessionId": "sess_41f318de-6416-4b8a-9021-25aaf3f59629",
+        "timestamp": 1794940046577
+      },
+      {
+        "executionId": "9823e65d-2ad7-4ad5-8df0-02ee7abeff2d",
+        "chatSessionId": "sess_41f318de-6416-4b8a-9021-25aaf3f59629",
+        "timestamp": 1794940130363
+      }
+    ],
+    "4.6 Write unit tests for the planner": [
+      {
+        "executionId": "21391d9e-b68f-4941-8030-b2445612937e",
+        "chatSessionId": "sess_674c2945-c143-4656-942e-e5181c32af64",
+        "timestamp": 1794940158562
+      },
+      {
+        "executionId": "21391d9e-b68f-4941-8030-b2445612937e",
+        "chatSessionId": "sess_674c2945-c143-4656-942e-e5181c32af64",
+        "timestamp": 1794940276268
+      }
+    ],
+    "5.1 Implement `SnsSqsHeaderMapper`, `CorrelationGuid`, and `FifoMessageIds`": [
+      {
+        "executionId": "96f33405-f947-4249-be2f-411197125ad0",
+        "chatSessionId": "sess_02ebc2e4-683f-4bb7-bdd1-8a3ce428d9f3",
+        "timestamp": 1794948827555
+      },
+      {
+        "executionId": "96f33405-f947-4249-be2f-411197125ad0",
+        "chatSessionId": "sess_02ebc2e4-683f-4bb7-bdd1-8a3ce428d9f3",
+        "timestamp": 1794948927038
+      }
+    ],
+    "5.2 Implement `SnsSqsWireFormat` and `SnsSqsMessageSizeGuard`": [
+      {
+        "executionId": "96f33405-f947-4249-be2f-411197125ad0",
+        "chatSessionId": "sess_02ebc2e4-683f-4bb7-bdd1-8a3ce428d9f3",
+        "timestamp": 1794948935059
+      },
+      {
+        "executionId": "96f33405-f947-4249-be2f-411197125ad0",
+        "chatSessionId": "sess_02ebc2e4-683f-4bb7-bdd1-8a3ce428d9f3",
+        "timestamp": 1794949026229
+      }
+    ],
+    "5. Wire format, headers, size guard, FIFO identifiers": [
+      {
+        "executionId": "96f33405-f947-4249-be2f-411197125ad0",
+        "chatSessionId": "sess_02ebc2e4-683f-4bb7-bdd1-8a3ce428d9f3",
+        "timestamp": 1794949027477
+      }
+    ],
+    "5.3 Write property test for the wire round trip": [
+      {
+        "executionId": "8226f527-d647-4342-9168-222f2d4789b8",
+        "chatSessionId": "sess_41a29d4a-71fb-4aaf-ad26-887a2aa5e1c5",
+        "timestamp": 1794949071800
+      },
+      {
+        "executionId": "8226f527-d647-4342-9168-222f2d4789b8",
+        "chatSessionId": "sess_41a29d4a-71fb-4aaf-ad26-887a2aa5e1c5",
+        "timestamp": 1794949237035
+      }
+    ],
+    "5.4 Write property test for the attribute budget": [
+      {
+        "executionId": "538b3bfe-4586-4ebb-8469-fa90821e7875",
+        "chatSessionId": "sess_9b53cff8-0f1a-48b0-8f55-59cce20d4bc5",
+        "timestamp": 1794949267010
+      },
+      {
+        "executionId": "538b3bfe-4586-4ebb-8469-fa90821e7875",
+        "chatSessionId": "sess_9b53cff8-0f1a-48b0-8f55-59cce20d4bc5",
+        "timestamp": 1794949432738
+      }
+    ],
+    "5.5 Write property test for correlation mapping": [
+      {
+        "executionId": "a50938ef-7ae3-4ffc-90ac-6420b3f1839c",
+        "chatSessionId": "sess_920add06-dcba-4092-8a23-1f50ca99c728",
+        "timestamp": 1794949450663
+      },
+      {
+        "executionId": "a50938ef-7ae3-4ffc-90ac-6420b3f1839c",
+        "chatSessionId": "sess_920add06-dcba-4092-8a23-1f50ca99c728",
+        "timestamp": 1794949544403
+      }
+    ],
+    "5.6 Write property test for the size guard": [
+      {
+        "executionId": "e2c02374-68ed-42a1-81a5-3a704f004d1a",
+        "chatSessionId": "sess_ce8d8308-915d-4ccc-b0b6-8dcb9e388d25",
+        "timestamp": 1794949565204
+      },
+      {
+        "executionId": "e2c02374-68ed-42a1-81a5-3a704f004d1a",
+        "chatSessionId": "sess_ce8d8308-915d-4ccc-b0b6-8dcb9e388d25",
+        "timestamp": 1794949891744
+      }
+    ],
+    "5.7 Write property test for FIFO identifiers": [
+      {
+        "executionId": "097daf60-3bc2-4762-9123-d920286fbf3c",
+        "chatSessionId": "sess_2d699257-66f8-4521-bc1b-4cff521b4a02",
+        "timestamp": 1794949905756
+      },
+      {
+        "executionId": "097daf60-3bc2-4762-9123-d920286fbf3c",
+        "chatSessionId": "sess_2d699257-66f8-4521-bc1b-4cff521b4a02",
+        "timestamp": 1794950044609
+      }
+    ],
+    "5.8 Write unit tests for the wire layer": [
+      {
+        "executionId": "c836d5eb-fb4b-487c-9042-7b6edf4572b3",
+        "chatSessionId": "sess_aa0d6def-f779-4cb7-a674-fc6c0e7600c9",
+        "timestamp": 1794950059196
+      },
+      {
+        "executionId": "c836d5eb-fb4b-487c-9042-7b6edf4572b3",
+        "chatSessionId": "sess_aa0d6def-f779-4cb7-a674-fc6c0e7600c9",
+        "timestamp": 1794950188604
+      }
+    ],
+    "6. Checkpoint - pure logic": [
+      {
+        "executionId": "44e62048-996a-438f-b413-b3cd873a144e",
+        "chatSessionId": "sess_b3de6b96-37f9-4816-a3da-2991052d9211",
+        "timestamp": 1794950238752
+      },
+      {
+        "executionId": "d912feb9-5793-415a-ab93-33724117bd89",
+        "chatSessionId": "sess_78888a81-1c2e-4a9d-9d3d-5b23f69a53ac",
+        "timestamp": 1794952092784
+      }
+    ],
+    "7.9 Tag container-backed test classes": [
+      {
+        "executionId": "76d48d47-066e-4d79-a050-91045523d47c",
+        "chatSessionId": "sess_654c188b-42a9-437f-ba1b-ff04c5369dfd",
+        "timestamp": 1794965032827
+      },
+      {
+        "executionId": "76d48d47-066e-4d79-a050-91045523d47c",
+        "chatSessionId": "sess_654c188b-42a9-437f-ba1b-ff04c5369dfd",
+        "timestamp": 1794965327650
+      }
+    ],
+    "7.1 Implement `QueuePolicyDocument`": [
+      {
+        "executionId": "76d48d47-066e-4d79-a050-91045523d47c",
+        "chatSessionId": "sess_654c188b-42a9-437f-ba1b-ff04c5369dfd",
+        "timestamp": 1794965033028
+      },
+      {
+        "executionId": "76d48d47-066e-4d79-a050-91045523d47c",
+        "chatSessionId": "sess_654c188b-42a9-437f-ba1b-ff04c5369dfd",
+        "timestamp": 1794965318512
+      }
+    ],
+    "7.3 Implement `ISnsSqsTopologyClient` and `AwsSnsSqsTopologyClient`": [
+      {
+        "executionId": "76d48d47-066e-4d79-a050-91045523d47c",
+        "chatSessionId": "sess_654c188b-42a9-437f-ba1b-ff04c5369dfd",
+        "timestamp": 1794965328274
+      },
+      {
+        "executionId": "76d48d47-066e-4d79-a050-91045523d47c",
+        "chatSessionId": "sess_654c188b-42a9-437f-ba1b-ff04c5369dfd",
+        "timestamp": 1794968912927
+      }
+    ],
+    "7.4 Implement `SnsSqsTopologyManager`": [
+      {
+        "executionId": "76d48d47-066e-4d79-a050-91045523d47c",
+        "chatSessionId": "sess_654c188b-42a9-437f-ba1b-ff04c5369dfd",
+        "timestamp": 1794968913770
+      },
+      {
+        "executionId": "76d48d47-066e-4d79-a050-91045523d47c",
+        "chatSessionId": "sess_654c188b-42a9-437f-ba1b-ff04c5369dfd",
+        "timestamp": 1794969065076
+      }
+    ],
+    "7. Topology management": [
+      {
+        "executionId": "76d48d47-066e-4d79-a050-91045523d47c",
+        "chatSessionId": "sess_654c188b-42a9-437f-ba1b-ff04c5369dfd",
+        "timestamp": 1794969067675
+      }
+    ],
+    "7.2 Write property test for the queue policy merge": [
+      {
+        "executionId": "38747046-4e52-47bb-aa62-d1d3cfb56515",
+        "chatSessionId": "sess_e6e64ccb-14b7-4142-8962-109e53e8679e",
+        "timestamp": 1795011327845
+      },
+      {
+        "executionId": "38747046-4e52-47bb-aa62-d1d3cfb56515",
+        "chatSessionId": "sess_e6e64ccb-14b7-4142-8962-109e53e8679e",
+        "timestamp": 1795011529363
+      }
+    ],
+    "7.5 Add `FakeSnsSqsTopologyClient`": [
+      {
+        "executionId": "60081a64-2328-4462-9662-90ac01c47be7",
+        "chatSessionId": "sess_349f507b-9aa8-4173-b459-5a4110bd0148",
+        "timestamp": 1795011630085
+      },
+      {
+        "executionId": "60081a64-2328-4462-9662-90ac01c47be7",
+        "chatSessionId": "sess_349f507b-9aa8-4173-b459-5a4110bd0148",
+        "timestamp": 1795011713442
+      }
+    ],
+    "7.6 Write property test for topology reconciliation": [
+      {
+        "executionId": "dbe87223-1008-4f74-ac2c-9a9792203bd3",
+        "chatSessionId": "sess_08c31dd1-6632-41a4-bd35-43a35278a00f",
+        "timestamp": 1795011764073
+      },
+      {
+        "executionId": "dbe87223-1008-4f74-ac2c-9a9792203bd3",
+        "chatSessionId": "sess_08c31dd1-6632-41a4-bd35-43a35278a00f",
+        "timestamp": 1795011917866
+      }
+    ],
+    "7.7 Write property test for verify-only mode": [
+      {
+        "executionId": "32e02f2c-b113-4f21-8d27-985080c72b4d",
+        "chatSessionId": "sess_763fde3d-b872-4af1-967a-e75c5f7c0cdc",
+        "timestamp": 1795012297259
+      },
+      {
+        "executionId": "32e02f2c-b113-4f21-8d27-985080c72b4d",
+        "chatSessionId": "sess_763fde3d-b872-4af1-967a-e75c5f7c0cdc",
+        "timestamp": 1795012367708
+      }
+    ],
+    "7.8 Write unit tests for the topology manager": [
+      {
+        "executionId": "022bf111-fb61-44e2-a80e-45eab3a7af91",
+        "chatSessionId": "sess_be440d38-b7b5-4350-9679-e12feb1d8955",
+        "timestamp": 1795012404936
+      },
+      {
+        "executionId": "022bf111-fb61-44e2-a80e-45eab3a7af91",
+        "chatSessionId": "sess_be440d38-b7b5-4350-9679-e12feb1d8955",
+        "timestamp": 1795014527212
+      }
+    ],
+    "8. Checkpoint - topology": [
+      {
+        "executionId": "acdee976-244b-46ae-882e-a0e3925a6659",
+        "chatSessionId": "sess_49213c46-6e2f-48f8-aa4d-735d66780db1",
+        "timestamp": 1795016117700
+      },
+      {
+        "executionId": "acdee976-244b-46ae-882e-a0e3925a6659",
+        "chatSessionId": "sess_49213c46-6e2f-48f8-aa4d-735d66780db1",
+        "timestamp": 1795016190348
+      }
+    ],
+    "9.2 Implement `SqsEnvelopeConsumer`": [
+      {
+        "executionId": "90266ec3-eec0-4cdf-a81e-bea0209dadb1",
+        "chatSessionId": "sess_58573aaf-b0bd-48de-bd5a-b48eac485b26",
+        "timestamp": 1795016232422
+      },
+      {
+        "executionId": "90266ec3-eec0-4cdf-a81e-bea0209dadb1",
+        "chatSessionId": "sess_58573aaf-b0bd-48de-bd5a-b48eac485b26",
+        "timestamp": 1795016416761
+      }
+    ],
+    "9.1 Implement `InFlightTrackingConsumeProcessor`": [
+      {
+        "executionId": "90266ec3-eec0-4cdf-a81e-bea0209dadb1",
+        "chatSessionId": "sess_58573aaf-b0bd-48de-bd5a-b48eac485b26",
+        "timestamp": 1795016232790
+      }
+    ],
+    "9.3 Implement `IDeadLetterQueueSender` and `SqsDeadLetterSink`": [
+      {
+        "executionId": "90266ec3-eec0-4cdf-a81e-bea0209dadb1",
+        "chatSessionId": "sess_58573aaf-b0bd-48de-bd5a-b48eac485b26",
+        "timestamp": 1795016233335
+      },
+      {
+        "executionId": "90266ec3-eec0-4cdf-a81e-bea0209dadb1",
+        "chatSessionId": "sess_58573aaf-b0bd-48de-bd5a-b48eac485b26",
+        "timestamp": 1795016417596
+      }
+    ],
+    "9.4 Write property test for in-flight tracking": [
+      {
+        "executionId": "17bd9214-98d5-4b5e-8059-891ecdd6a618",
+        "chatSessionId": "sess_43688783-4b24-4d5c-8888-3fc108b9f896",
+        "timestamp": 1795016473685
+      },
+      {
+        "executionId": "17bd9214-98d5-4b5e-8059-891ecdd6a618",
+        "chatSessionId": "sess_43688783-4b24-4d5c-8888-3fc108b9f896",
+        "timestamp": 1795016577668
+      }
+    ],
+    "9.5 Write property test for dead-letter preservation": [
+      {
+        "executionId": "513f8240-96f3-43ff-801f-dcab571b2634",
+        "chatSessionId": "sess_24278be9-2046-4555-b46e-9760f425ccaa",
+        "timestamp": 1795016824773
+      },
+      {
+        "executionId": "513f8240-96f3-43ff-801f-dcab571b2634",
+        "chatSessionId": "sess_24278be9-2046-4555-b46e-9760f425ccaa",
+        "timestamp": 1795017126251
+      }
+    ],
+    "9.6 Write unit tests for the consume wiring": [
+      {
+        "executionId": "e56b5bd7-f1e3-45c1-9ee6-9442fbd594cb",
+        "chatSessionId": "sess_7020d19d-de69-4087-bc44-9d224e68a26f",
+        "timestamp": 1795017156549
+      },
+      {
+        "executionId": "e56b5bd7-f1e3-45c1-9ee6-9442fbd594cb",
+        "chatSessionId": "sess_7020d19d-de69-4087-bc44-9d224e68a26f",
+        "timestamp": 1795018412063
+      }
+    ],
+    "9. Consume path and dead-letter sink": [
+      {
+        "executionId": "e56b5bd7-f1e3-45c1-9ee6-9442fbd594cb",
+        "chatSessionId": "sess_7020d19d-de69-4087-bc44-9d224e68a26f",
+        "timestamp": 1795018413493
+      }
+    ],
+    "10.1 Implement `AmazonSqsMetrics`": [
+      {
+        "executionId": "bf20f1ce-d562-4067-b75c-6fb0fc4b5c54",
+        "chatSessionId": "sess_b16c52a3-09f5-47e7-92b4-e7b59b218e82",
+        "timestamp": 1795018506738
+      },
+      {
+        "executionId": "bf20f1ce-d562-4067-b75c-6fb0fc4b5c54",
+        "chatSessionId": "sess_b16c52a3-09f5-47e7-92b4-e7b59b218e82",
+        "timestamp": 1795018588622
+      }
+    ],
+    "10.2 Implement `AmazonSqsBusAdapter` construction, start, and stop": [
+      {
+        "executionId": "bf20f1ce-d562-4067-b75c-6fb0fc4b5c54",
+        "chatSessionId": "sess_b16c52a3-09f5-47e7-92b4-e7b59b218e82",
+        "timestamp": 1795018593980
+      },
+      {
+        "executionId": "bf20f1ce-d562-4067-b75c-6fb0fc4b5c54",
+        "chatSessionId": "sess_b16c52a3-09f5-47e7-92b4-e7b59b218e82",
+        "timestamp": 1795018602171
+      },
+      {
+        "executionId": "bf20f1ce-d562-4067-b75c-6fb0fc4b5c54",
+        "chatSessionId": "sess_b16c52a3-09f5-47e7-92b4-e7b59b218e82",
+        "timestamp": 1795018903219
+      }
+    ],
+    "10.3 Implement publish, dead-letter send, and reachability on the adapter": [
+      {
+        "executionId": "bf20f1ce-d562-4067-b75c-6fb0fc4b5c54",
+        "chatSessionId": "sess_b16c52a3-09f5-47e7-92b4-e7b59b218e82",
+        "timestamp": 1795018594359
+      },
+      {
+        "executionId": "bf20f1ce-d562-4067-b75c-6fb0fc4b5c54",
+        "chatSessionId": "sess_b16c52a3-09f5-47e7-92b4-e7b59b218e82",
+        "timestamp": 1795018907924
+      },
+      {
+        "executionId": "bf20f1ce-d562-4067-b75c-6fb0fc4b5c54",
+        "chatSessionId": "sess_b16c52a3-09f5-47e7-92b4-e7b59b218e82",
+        "timestamp": 1795019085268
+      },
+      {
+        "executionId": "63171298-fc6d-43ae-88d7-8095cbbadaf2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795024724022
+      },
+      {
+        "executionId": "63171298-fc6d-43ae-88d7-8095cbbadaf2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795024730057
+      },
+      {
+        "executionId": "63171298-fc6d-43ae-88d7-8095cbbadaf2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795024938355
+      }
+    ],
+    "11.1 Implement `AmazonSqsBusHostedService`": [
+      {
+        "executionId": "bf20f1ce-d562-4067-b75c-6fb0fc4b5c54",
+        "chatSessionId": "sess_b16c52a3-09f5-47e7-92b4-e7b59b218e82",
+        "timestamp": 1795018595031
+      },
+      {
+        "executionId": "21cef47c-c396-4a4e-a95a-c87db442bf95",
+        "chatSessionId": "sess_dee87bf9-d81e-4d92-8078-83225a7c3c65",
+        "timestamp": 1795020712153
+      },
+      {
+        "executionId": "21cef47c-c396-4a4e-a95a-c87db442bf95",
+        "chatSessionId": "sess_dee87bf9-d81e-4d92-8078-83225a7c3c65",
+        "timestamp": 1795020773332
+      }
+    ],
+    "11.2 Extend `AddMassTransitMessagingProvider` for the `AmazonSqs` transport": [
+      {
+        "executionId": "bf20f1ce-d562-4067-b75c-6fb0fc4b5c54",
+        "chatSessionId": "sess_b16c52a3-09f5-47e7-92b4-e7b59b218e82",
+        "timestamp": 1795018595321
+      },
+      {
+        "executionId": "21cef47c-c396-4a4e-a95a-c87db442bf95",
+        "chatSessionId": "sess_dee87bf9-d81e-4d92-8078-83225a7c3c65",
+        "timestamp": 1795020773547
+      },
+      {
+        "executionId": "21cef47c-c396-4a4e-a95a-c87db442bf95",
+        "chatSessionId": "sess_dee87bf9-d81e-4d92-8078-83225a7c3c65",
+        "timestamp": 1795020962780
+      }
+    ],
+    "12. Checkpoint - adapter and wiring": [
+      {
+        "executionId": "bf20f1ce-d562-4067-b75c-6fb0fc4b5c54",
+        "chatSessionId": "sess_b16c52a3-09f5-47e7-92b4-e7b59b218e82",
+        "timestamp": 1795018595576
+      },
+      {
+        "executionId": "dac4012d-1b46-4b0b-bc58-fd7aead4343f",
+        "chatSessionId": "sess_be133720-cd34-4539-8004-9078cbc1e293",
+        "timestamp": 1795021706909
+      },
+      {
+        "executionId": "dac4012d-1b46-4b0b-bc58-fd7aead4343f",
+        "chatSessionId": "sess_be133720-cd34-4539-8004-9078cbc1e293",
+        "timestamp": 1795021776115
+      }
+    ],
+    "13.1 Add the LocalStack service to `docker-compose.yml`": [
+      {
+        "executionId": "bf20f1ce-d562-4067-b75c-6fb0fc4b5c54",
+        "chatSessionId": "sess_b16c52a3-09f5-47e7-92b4-e7b59b218e82",
+        "timestamp": 1795018596185
+      },
+      {
+        "executionId": "4a8806e0-c909-4850-a72e-9a6c762bb8a9",
+        "chatSessionId": "sess_8f9e6a97-70fe-48a9-8562-30f69e7630c4",
+        "timestamp": 1795022407787
+      },
+      {
+        "executionId": "4a8806e0-c909-4850-a72e-9a6c762bb8a9",
+        "chatSessionId": "sess_8f9e6a97-70fe-48a9-8562-30f69e7630c4",
+        "timestamp": 1795022810677
+      }
+    ],
+    "13.3 Update the README": [
+      {
+        "executionId": "bf20f1ce-d562-4067-b75c-6fb0fc4b5c54",
+        "chatSessionId": "sess_b16c52a3-09f5-47e7-92b4-e7b59b218e82",
+        "timestamp": 1795018596621
+      },
+      {
+        "executionId": "4a8806e0-c909-4850-a72e-9a6c762bb8a9",
+        "chatSessionId": "sess_8f9e6a97-70fe-48a9-8562-30f69e7630c4",
+        "timestamp": 1795022406705
+      },
+      {
+        "executionId": "4a8806e0-c909-4850-a72e-9a6c762bb8a9",
+        "chatSessionId": "sess_8f9e6a97-70fe-48a9-8562-30f69e7630c4",
+        "timestamp": 1795022811489
+      }
+    ],
+    "15. Final checkpoint - full suite": [
+      {
+        "executionId": "bf20f1ce-d562-4067-b75c-6fb0fc4b5c54",
+        "chatSessionId": "sess_b16c52a3-09f5-47e7-92b4-e7b59b218e82",
+        "timestamp": 1795018597171
+      },
+      {
+        "executionId": "5229b067-536d-4c78-a034-2dec99762acc",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795031571083
+      },
+      {
+        "executionId": "5229b067-536d-4c78-a034-2dec99762acc",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795031846066
+      },
+      {
+        "executionId": "ac6ce156-c9d4-4816-865f-417c79e4bc98",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795032901414
+      },
+      {
+        "executionId": "4984e877-d6b2-4891-b0db-ebf81e28aa0e",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795033884482
+      },
+      {
+        "executionId": "4984e877-d6b2-4891-b0db-ebf81e28aa0e",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795034329757
+      },
+      {
+        "executionId": "5bcd24a8-2dce-4830-92cb-d9f153245a1e",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795034622650
+      },
+      {
+        "executionId": "81bdf274-5129-466f-a43d-5dda80636ba2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795035396437
+      },
+      {
+        "executionId": "81bdf274-5129-466f-a43d-5dda80636ba2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795035745404
+      }
+    ],
+    "10. Metrics and the bus adapter": [
+      {
+        "executionId": "bf20f1ce-d562-4067-b75c-6fb0fc4b5c54",
+        "chatSessionId": "sess_b16c52a3-09f5-47e7-92b4-e7b59b218e82",
+        "timestamp": 1795019085638
+      }
+    ],
+    "10.4 Write unit tests for the adapter with a fake bus": [
+      {
+        "executionId": "b316ce2f-a29a-4923-a494-a8020c64c067",
+        "chatSessionId": "sess_f973844f-24bf-4f14-b48c-b1716ae0d49c",
+        "timestamp": 1795019147883
+      },
+      {
+        "executionId": "63171298-fc6d-43ae-88d7-8095cbbadaf2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795024725284
+      },
+      {
+        "executionId": "63171298-fc6d-43ae-88d7-8095cbbadaf2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795024940482
+      },
+      {
+        "executionId": "63171298-fc6d-43ae-88d7-8095cbbadaf2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795025468403
+      }
+    ],
+    "10.5 Write unit tests for reachability": [
+      {
+        "executionId": "6772229f-810e-42ed-971d-f8ef189e8b93",
+        "chatSessionId": "sess_d352310a-3587-47a1-8dd2-9661f09e6e87",
+        "timestamp": 1795020174450
+      },
+      {
+        "executionId": "6772229f-810e-42ed-971d-f8ef189e8b93",
+        "chatSessionId": "sess_d352310a-3587-47a1-8dd2-9661f09e6e87",
+        "timestamp": 1795020232379
+      },
+      {
+        "executionId": "63171298-fc6d-43ae-88d7-8095cbbadaf2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795024726025
+      },
+      {
+        "executionId": "63171298-fc6d-43ae-88d7-8095cbbadaf2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795024942194
+      },
+      {
+        "executionId": "63171298-fc6d-43ae-88d7-8095cbbadaf2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795025863407
+      },
+      {
+        "executionId": "5bcd24a8-2dce-4830-92cb-d9f153245a1e",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795034480936
+      },
+      {
+        "executionId": "5bcd24a8-2dce-4830-92cb-d9f153245a1e",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795034610496
+      },
+      {
+        "executionId": "81bdf274-5129-466f-a43d-5dda80636ba2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795034659590
+      },
+      {
+        "executionId": "81bdf274-5129-466f-a43d-5dda80636ba2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795035744406
+      }
+    ],
+    "10.6 Write unit tests for observability": [
+      {
+        "executionId": "ae11e7f2-f34d-426f-a0b0-b4f2af95e9ef",
+        "chatSessionId": "sess_759bca79-9060-4d11-bca8-89ffc051cfee",
+        "timestamp": 1795020262474
+      },
+      {
+        "executionId": "ae11e7f2-f34d-426f-a0b0-b4f2af95e9ef",
+        "chatSessionId": "sess_759bca79-9060-4d11-bca8-89ffc051cfee",
+        "timestamp": 1795020581913
+      }
+    ],
+    "11. Hosted service and DI wiring": [
+      {
+        "executionId": "21cef47c-c396-4a4e-a95a-c87db442bf95",
+        "chatSessionId": "sess_dee87bf9-d81e-4d92-8078-83225a7c3c65",
+        "timestamp": 1795020964457
+      }
+    ],
+    "11.3 Write unit tests for DI wiring": [
+      {
+        "executionId": "b0475fbe-48df-49af-940a-0dad9dc02cb9",
+        "chatSessionId": "sess_a6ef23f8-5f9a-4d8d-a138-f9e5bf762f08",
+        "timestamp": 1795021021712
+      },
+      {
+        "executionId": "b0475fbe-48df-49af-940a-0dad9dc02cb9",
+        "chatSessionId": "sess_a6ef23f8-5f9a-4d8d-a138-f9e5bf762f08",
+        "timestamp": 1795021172510
+      }
+    ],
+    "11.4 Write property test for diagnostics": [
+      {
+        "executionId": "3ca21488-cf0e-43c1-90df-c6f4aee41e60",
+        "chatSessionId": "sess_dd2fadcd-a2d9-44b2-b535-f64a24f5e9b9",
+        "timestamp": 1795021235908
+      },
+      {
+        "executionId": "3ca21488-cf0e-43c1-90df-c6f4aee41e60",
+        "chatSessionId": "sess_dd2fadcd-a2d9-44b2-b535-f64a24f5e9b9",
+        "timestamp": 1795021596447
+      }
+    ],
+    "13. Local development environment": [
+      {
+        "executionId": "4a8806e0-c909-4850-a72e-9a6c762bb8a9",
+        "chatSessionId": "sess_8f9e6a97-70fe-48a9-8562-30f69e7630c4",
+        "timestamp": 1795022811890
+      }
+    ],
+    "13.2 Write compose consistency tests": [
+      {
+        "executionId": "65d961fc-2fdb-4dfa-a0dd-ade8ed684525",
+        "chatSessionId": "sess_4452eecb-5611-4817-869c-fa6c91757b75",
+        "timestamp": 1795023201878
+      },
+      {
+        "executionId": "65d961fc-2fdb-4dfa-a0dd-ade8ed684525",
+        "chatSessionId": "sess_4452eecb-5611-4817-869c-fa6c91757b75",
+        "timestamp": 1795024060667
+      }
+    ],
+    "13.4 Write property test for image tag resolution": [
+      {
+        "executionId": "b54cf40e-5a14-4a18-b89d-dc16661d2d0a",
+        "chatSessionId": "sess_ecd3d168-fbdf-4a65-84cc-7af5bf756ae5",
+        "timestamp": 1795024217248
+      },
+      {
+        "executionId": "b54cf40e-5a14-4a18-b89d-dc16661d2d0a",
+        "chatSessionId": "sess_ecd3d168-fbdf-4a65-84cc-7af5bf756ae5",
+        "timestamp": 1795024375275
+      }
+    ],
+    "14. LocalStack integration tests": [
+      {
+        "executionId": "d9f1ea1b-9fd3-4c30-815c-1d1d53c34ff0",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795024430116
+      },
+      {
+        "executionId": "1dce8660-c624-450d-8dcf-bec83221d7f3",
+        "chatSessionId": "sess_aed456af-b4f3-4fe8-8512-91872fa8a39e",
+        "timestamp": 1795031427178
+      },
+      {
+        "executionId": "ea2c6757-44fc-4796-b13c-7f8396fdfd9f",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795032216481
+      }
+    ],
+    "14.1 Add the integration harness": [
+      {
+        "executionId": "63171298-fc6d-43ae-88d7-8095cbbadaf2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795025868282
+      },
+      {
+        "executionId": "63171298-fc6d-43ae-88d7-8095cbbadaf2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795026346999
+      }
+    ],
+    "14.2 Test fan-out": [
+      {
+        "executionId": "63171298-fc6d-43ae-88d7-8095cbbadaf2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795026632135
+      }
+    ],
+    "14.3 Test competing consumers": [
+      {
+        "executionId": "63171298-fc6d-43ae-88d7-8095cbbadaf2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795026634599
+      }
+    ],
+    "14.4 Test late subscription": [
+      {
+        "executionId": "63171298-fc6d-43ae-88d7-8095cbbadaf2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795026635796
+      }
+    ],
+    "14.8 Test raw and wrapped delivery": [
+      {
+        "executionId": "63171298-fc6d-43ae-88d7-8095cbbadaf2",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795026638440
+      }
+    ],
+    "14.5 Test retry exhaustion and dead-lettering": [
+      {
+        "executionId": "b91becba-1614-4ea8-9bb1-3b36d7eca3cc",
+        "chatSessionId": "sess_c62bb55a-d795-43fd-824f-7ba1e443040d",
+        "timestamp": 1795028972813
+      },
+      {
+        "executionId": "b91becba-1614-4ea8-9bb1-3b36d7eca3cc",
+        "chatSessionId": "sess_c62bb55a-d795-43fd-824f-7ba1e443040d",
+        "timestamp": 1795029232443
+      }
+    ],
+    "14.6 Test SQS redrive": [
+      {
+        "executionId": "0a528573-b8ff-4584-b5cf-8766126efeb9",
+        "chatSessionId": "sess_8cfa05e8-d6d4-4bc9-9835-6145ff208f91",
+        "timestamp": 1795029283766
+      },
+      {
+        "executionId": "0a528573-b8ff-4584-b5cf-8766126efeb9",
+        "chatSessionId": "sess_8cfa05e8-d6d4-4bc9-9835-6145ff208f91",
+        "timestamp": 1795029517902
+      }
+    ],
+    "14.7 Test topology creation": [
+      {
+        "executionId": "4c819985-99d8-4932-a7c5-7f2d6d16f596",
+        "chatSessionId": "sess_38f96d86-8834-4460-96a1-95a7f64639de",
+        "timestamp": 1795029605215
+      }
+    ],
+    "14.9 Test FIFO delivery": [
+      {
+        "executionId": "ef8ccbaa-3184-4521-909f-168a417a19db",
+        "chatSessionId": "sess_6d40a6f4-b778-4d69-a5f0-b632c5f8c8b2",
+        "timestamp": 1795029709925
+      },
+      {
+        "executionId": "ef8ccbaa-3184-4521-909f-168a417a19db",
+        "chatSessionId": "sess_6d40a6f4-b778-4d69-a5f0-b632c5f8c8b2",
+        "timestamp": 1795029985862
+      }
+    ],
+    "14.10 Test idempotent consumption": [
+      {
+        "executionId": "f49781e2-844e-4194-b76a-c6d6ba2289f4",
+        "chatSessionId": "sess_b3e34925-6969-4c25-8072-e18ed12f5a3d",
+        "timestamp": 1795030029934
+      },
+      {
+        "executionId": "ea2c6757-44fc-4796-b13c-7f8396fdfd9f",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795032128985
+      },
+      {
+        "executionId": "ea2c6757-44fc-4796-b13c-7f8396fdfd9f",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795032194918
+      },
+      {
+        "executionId": "ac6ce156-c9d4-4816-865f-417c79e4bc98",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795032271854
+      },
+      {
+        "executionId": "ac6ce156-c9d4-4816-865f-417c79e4bc98",
+        "chatSessionId": "sess_be54b0cf-fc55-4be0-bad4-61a37ad1f87d",
+        "timestamp": 1795032887534
+      }
+    ],
+    "14.11 Test graceful shutdown": [
+      {
+        "executionId": "030ee7ab-b8be-48f4-98e0-70ea8373f7d5",
+        "chatSessionId": "sess_c1876b98-888b-45f3-aaf4-5b64430ac56c",
+        "timestamp": 1795030308026
+      },
+      {
+        "executionId": "030ee7ab-b8be-48f4-98e0-70ea8373f7d5",
+        "chatSessionId": "sess_c1876b98-888b-45f3-aaf4-5b64430ac56c",
+        "timestamp": 1795030617576
+      }
+    ],
+    "14.12 Test readiness": [
+      {
+        "executionId": "24d13db9-a719-4fb9-bc7d-738f5fc35e95",
+        "chatSessionId": "sess_60818fbf-0d0c-4ecd-8a7f-8d778851cf36",
+        "timestamp": 1795030648060
+      }
+    ],
+    "14.13 Test header and size boundaries": [
+      {
+        "executionId": "1dce8660-c624-450d-8dcf-bec83221d7f3",
+        "chatSessionId": "sess_aed456af-b4f3-4fe8-8512-91872fa8a39e",
+        "timestamp": 1795030981851
+      },
+      {
+        "executionId": "1dce8660-c624-450d-8dcf-bec83221d7f3",
+        "chatSessionId": "sess_aed456af-b4f3-4fe8-8512-91872fa8a39e",
+        "timestamp": 1795031425153
+      }
+    ],
+    "4.4 Write unit tests for naming": [
+      {
+        "executionId": "0b0f248b-7dd2-4d5c-b565-028aebb275fd",
+        "chatSessionId": "sess_63b653f1-f168-4902-9436-87bc0c97c243",
+        "timestamp": 1795032977794
+      },
+      {
+        "executionId": "0b0f248b-7dd2-4d5c-b565-028aebb275fd",
+        "chatSessionId": "sess_63b653f1-f168-4902-9436-87bc0c97c243",
+        "timestamp": 1795033780615
+      }
+    ]
+  }
+}

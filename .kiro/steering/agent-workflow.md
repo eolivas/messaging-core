@@ -29,3 +29,12 @@ Process rules learned from past sessions. They apply to every task.
 - Remove containers started by that run once it finishes.
 - Never remove containers that existed before the run, or that
   belong to another project, without asking the user.
+
+## Checkpoint and test runs
+- Checkpoint tasks run only the command written in the task,
+  once. Report pass/fail counts and the first failure.
+- Do not attempt fixes during a checkpoint; report and stop.
+- Never run a plain `dotnet test` on a project that mixes unit
+  and container tests; filter with `Category!=Integration`.
+- Give container-backed runs `--blame-hang-timeout 2m` and
+  every test command an explicit timeout.
