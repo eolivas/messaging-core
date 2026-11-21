@@ -34,6 +34,7 @@ namespace Messaging.Persistence.Tests.Outbox;
 [Trait("Feature", "messaging-core")]
 [Trait("Property", "11")]
 [Collection(PostgresCollection.Name)]
+[Trait("Category", "Integration")]
 public class OutboxRetainedBoundedFailuresPropertyTests
 {
     // Joining PostgresCollection makes [Fact] siblings share the one container. This fixture handle

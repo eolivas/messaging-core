@@ -46,6 +46,7 @@ namespace Messaging.Persistence.Tests.Outbox;
 /// </remarks>
 [Trait("Feature", "messaging-core")]
 [Collection(PostgresCollection.Name)]
+[Trait("Category", "Integration")]
 public sealed class OutboxAtomicityIntegrationTests
 {
     private readonly PostgresContainerFixture _fixture;

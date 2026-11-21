@@ -43,6 +43,7 @@ namespace Messaging.Persistence.Tests.Idempotency;
 /// </remarks>
 [Trait("Feature", "messaging-core")]
 [Collection(PostgresCollection.Name)]
+[Trait("Category", "Integration")]
 public sealed class RetentionBoundaryTests
 {
     private readonly PostgresContainerFixture _fixture;

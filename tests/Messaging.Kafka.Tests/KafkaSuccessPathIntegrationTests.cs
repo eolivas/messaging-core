@@ -10,6 +10,7 @@ namespace Messaging.Kafka.Tests;
 /// consumer in the same group is not redelivered it.
 /// </summary>
 [Collection(KafkaCollection.Name)]
+[Trait("Category", "Integration")]
 public sealed class KafkaSuccessPathIntegrationTests
 {
     // Quiet window observed after the second consumer is proven to hold its partition assignment.
