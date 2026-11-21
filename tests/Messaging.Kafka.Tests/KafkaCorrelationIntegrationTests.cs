@@ -11,6 +11,7 @@ namespace Messaging.Kafka.Tests;
 /// unchanged (Req 5.2, 9.4, 9.5, 13.7).
 /// </summary>
 [Collection(KafkaCollection.Name)]
+[Trait("Category", "Integration")]
 public sealed class KafkaCorrelationIntegrationTests
 {
     private readonly KafkaContainerFixture _kafka;

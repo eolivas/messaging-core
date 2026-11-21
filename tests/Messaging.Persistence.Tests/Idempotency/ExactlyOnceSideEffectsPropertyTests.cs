@@ -27,6 +27,7 @@ namespace Messaging.Persistence.Tests.Idempotency;
 [Trait("Feature", "messaging-core")]
 [Trait("Property", "16")]
 [Collection(PostgresCollection.Name)]
+[Trait("Category", "Integration")]
 public class ExactlyOnceSideEffectsPropertyTests
 {
     // Joining PostgresCollection makes [Fact] siblings in the collection share the one container.

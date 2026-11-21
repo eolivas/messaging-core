@@ -22,6 +22,7 @@ namespace Messaging.Kafka.Tests;
 /// broker behaviour, so only a real Kafka demonstrates it.
 /// </summary>
 [Collection(KafkaCollection.Name)]
+[Trait("Category", "Integration")]
 public sealed class KafkaAtLeastOnceIntegrationTests
 {
     private readonly KafkaContainerFixture _kafka;

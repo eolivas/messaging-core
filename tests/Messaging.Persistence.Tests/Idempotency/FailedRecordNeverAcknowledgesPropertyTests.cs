@@ -39,6 +39,7 @@ namespace Messaging.Persistence.Tests.Idempotency;
 [Trait("Feature", "messaging-core")]
 [Trait("Property", "17")]
 [Collection(PostgresCollection.Name)]
+[Trait("Category", "Integration")]
 public class FailedRecordNeverAcknowledgesPropertyTests
 {
     // Joining PostgresCollection makes [Fact] siblings share the one container. This fixture handle
