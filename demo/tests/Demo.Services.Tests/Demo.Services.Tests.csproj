@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Demo.SalesLeads\Demo.SalesLeads.csproj" />
+    <ProjectReference Include="..\..\src\Demo.Customer\Demo.Customer.csproj" />
+    <ProjectReference Include="..\..\src\Demo.Communications\Demo.Communications.csproj" />
+  </ItemGroup>
+</Project>

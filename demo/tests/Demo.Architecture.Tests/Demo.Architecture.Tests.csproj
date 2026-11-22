@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- References every demo src project so layering edges can be checked by reflection. -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Demo.Contracts\Demo.Contracts.csproj" />
+    <ProjectReference Include="..\..\src\Demo.SalesLeads\Demo.SalesLeads.csproj" />
+    <ProjectReference Include="..\..\src\Demo.Customer\Demo.Customer.csproj" />
+    <ProjectReference Include="..\..\src\Demo.Communications\Demo.Communications.csproj" />
+    <ProjectReference Include="..\..\src\Demo.Application\Demo.Application.csproj" />
+    <ProjectReference Include="..\..\src\Demo.Infrastructure\Demo.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Demo.Api\Demo.Api.csproj" />
+  </ItemGroup>
+</Project>

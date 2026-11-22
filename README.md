@@ -16,6 +16,9 @@ behind swappable provider adapters.
 > The Batch adapter and some host wiring remain intentionally
 > deferred to follow-up specs
 > (see [Current status](#current-status)).
+> A local [demo app](#demo-app) under `demo/` shows the library
+> moving an event between three mock microservices over RabbitMQ,
+> Kafka, or Amazon SNS/SQS.
 
 ## Highlights
 
@@ -64,6 +67,8 @@ behind swappable provider adapters.
   `docker compose up -d --wait` starts a local Kafka broker on `localhost:9092`, and LocalStack
   for SNS/SQS on `localhost:4566`)
 
+- Node.js 18+ and npm 9+ (only for the [demo app](#demo-app) Frontend)
+
 Nullable reference types and implicit usings are enabled across the solution, and package versions
 are pinned to exact patches.
 
@@ -73,6 +78,98 @@ are pinned to exact patches.
 dotnet build MessagingCore.sln
 dotnet test MessagingCore.sln
 ```
+
+## Demo app
+
+`demo/` holds a local, single-user demo of the library. A React Frontend talks to a .NET
+Backend for Frontend (BFF, `Demo.Api`). You pick a provider, review its default settings, start
+it, and click **Quote Accepted**. Sales Leads MS publishes a `QuoteAcceptedEvent`, Customer MS
+and Communications MS each consume their own copy, and the Frontend animates every step. You can
+also make a consumer fail once or always, to watch retries and dead-lettering.
+
+The demo is additive. It has its own solution (`demo/MessagingDemo.sln`) and does not modify
+`src/`, `tests/`, `MessagingCore.sln`, `global.json` or the root `docker-compose.yml`; an
+architecture test enforces this. Full details, including the library follow-ups the demo works
+around, are in [demo/README.md](demo/README.md).
+
+| Provider | Broker | Ports |
+|---|---|---|
+| RabbitMQ | `demo/docker-compose.yml` (`rabbitmq:3.13.7-management-alpine`) | 5672, 15672 |
+| Kafka | root `docker-compose.yml` (`confluentinc/cp-kafka:7.6.1`) | 9092 |
+| Amazon SNS/SQS | root `docker-compose.yml` (LocalStack `4.14.0`) | 4566 |
+| Azure Service Bus | Listed as unavailable: the library has no transport for it yet. | – |
+
+### Start the local environment
+
+Docker must be running. Run every command from the repository root, and use one terminal per
+step.
+
+1. **Build once.**
+
+   ```bash
+   dotnet build demo/MessagingDemo.sln
+   (cd demo/src/frontend && npm install)
+   ```
+
+2. **Start one broker** for the provider you want to demo:
+
+   ```bash
+   demo/scripts/start-broker.sh rabbitmq   # or: kafka | sns-sqs
+   ```
+
+   The script checks that Docker is running and the ports are free, then waits up to 60 s for
+   the container to become healthy. On failure it prints the container logs, removes the
+   container and exits non-zero. RabbitMQ can report healthy a few seconds before it accepts
+   logins; if the first Start fails with a connection or authentication error, wait 30 to 60 s
+   and retry.
+
+3. **Start the BFF** on http://localhost:5080:
+
+   ```bash
+   dotnet run --project demo/src/Demo.Api
+   ```
+
+   Local connection settings come from `demo/src/Demo.Api/appsettings.Development.json`. These
+   are throwaway local-only values (`guest/guest` for RabbitMQ, `test/test` for LocalStack).
+   Environment variables override them, for example `Demo__RabbitMq__ConnectionString`. The BFF
+   exits non-zero at startup if a required setting is missing.
+
+4. **Start the Frontend** on http://localhost:5173:
+
+   ```bash
+   cd demo/src/frontend && npm run dev
+   ```
+
+   The Frontend reads the BFF address from `VITE_BFF_BASE_URL` in `.env.development`
+   (`http://localhost:5080`). The BFF accepts cross-origin calls only from
+   `Demo:FrontendOrigin`, which defaults to `http://localhost:5173`.
+
+5. **Run the demo.** Open http://localhost:5173, select the provider whose broker you started,
+   click **Start**, then click **Quote Accepted**.
+
+### Stop the local environment
+
+Stop the Frontend and the BFF with Ctrl+C, then stop the broker:
+
+```bash
+docker compose -f demo/docker-compose.yml down        # RabbitMQ
+docker compose -f docker-compose.yml down kafka       # Kafka
+docker compose -f docker-compose.yml down localstack  # SNS/SQS
+```
+
+### Demo tests
+
+```bash
+# Unit, property and architecture tests (no Docker)
+dotnet test demo/MessagingDemo.sln --filter "Category!=Integration"
+(cd demo/src/frontend && npm run test -- --run)
+
+# Integration tests (Testcontainers; Docker must be running)
+dotnet test demo/MessagingDemo.sln --filter "Category=Integration" --blame-hang-timeout 2m
+```
+
+Don't run a plain `dotnet test` on the demo solution, because it mixes unit and container tests.
+Check `docker ps` afterwards for leftover containers.
 
 ## Current status
 
