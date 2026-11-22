@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Demo.Application\Demo.Application.csproj" />
+    <ProjectReference Include="..\Demo.SalesLeads\Demo.SalesLeads.csproj" />
+    <ProjectReference Include="..\Demo.Customer\Demo.Customer.csproj" />
+    <ProjectReference Include="..\Demo.Communications\Demo.Communications.csproj" />
+    <ProjectReference Include="..\..\..\src\Messaging.MassTransit\Messaging.MassTransit.csproj" />
+    <ProjectReference Include="..\..\..\src\Messaging.Kafka\Messaging.Kafka.csproj" />
+  </ItemGroup>
+</Project>

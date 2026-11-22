@@ -1,0 +1,28 @@
+# Local RabbitMQ broker for the messaging demo.
+# Kafka and LocalStack come from the repository root docker-compose.yml (unmodified).
+#
+# Start:  demo/scripts/start-broker.sh rabbitmq
+# Stop:   docker compose -f demo/docker-compose.yml down
+#
+# Throwaway local-only credentials. Never use these outside a developer machine.
+services:
+  rabbitmq:
+    # Pinned release tag. Never use "latest".
+    image: rabbitmq:3.13.7-management-alpine
+    container_name: messaging-demo-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      # Matches RabbitMq:ConnectionString in Demo.Api appsettings.Development.json.
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      # Run as the rabbitmq user: a root exec during boot would create
+      # /var/lib/rabbitmq/.erlang.cookie owned by root and crash the server.
+      test: ["CMD", "su-exec", "rabbitmq", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 10s
+      retries: 12
+      start_period: 10s
+    restart: "no"

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Real brokers via Testcontainers (no in-memory transports). Tests carry Category=Integration. -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.11" />
+    <PackageReference Include="Testcontainers.RabbitMq" Version="3.10.0" />
+    <PackageReference Include="Testcontainers.LocalStack" Version="3.10.0" />
+    <PackageReference Include="Testcontainers.Kafka" Version="3.10.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Demo.Api\Demo.Api.csproj" />
+    <ProjectReference Include="..\..\src\Demo.Infrastructure\Demo.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

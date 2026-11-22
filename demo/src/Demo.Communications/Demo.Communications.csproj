@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\Demo.Contracts\Demo.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\src\Messaging.Abstractions\Messaging.Abstractions.csproj" />
+  </ItemGroup>
+</Project>
